@@ -29,9 +29,17 @@
         courses: []
       }
     },
+    mounted(){
+      Event.$on('delete-course', id => {
+        this.courses = this.courses.filter(course => course.id !== id)
+      })
+    },
     methods: {
       addCourse() {
+        let id = this.courses[this.courses.length - 1]
+        id = id === undefined ? 0 : id.id + 1;
         let course = {
+          id: id,
           name: '',
           repeat: false,
           assignments: [

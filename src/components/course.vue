@@ -42,6 +42,10 @@
                     </tr>
                     </tbody>
                 </table>
+                <button class="button is-small is-primary" @click="add">Add Assignment</button>
+                <button class="button is-small is-danger" @click="remove">Remove last row</button>
+                <button class="button is-small is-danger" @click="deleteCourse">Remove this course from the list</button>
+                <hr>
                 <div class="columns">
                     <div class="column">
                         <div class="field">
@@ -123,6 +127,21 @@
           }
         }
         return weight
+      },
+      add(){
+        this.course.assignments.push({
+          name: '',
+          grade: '',
+          weight: ''
+        })
+      },
+      remove(){
+        this.course.assignments.pop()
+      },
+      deleteCourse(){
+        if(confirm("Are you sure that you want to remove the course " + this.course.name + " from the list?")){
+          Event.$emit('delete-course', this.course.id)
+        }
       }
     }
   }
