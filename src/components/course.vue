@@ -51,7 +51,7 @@
                             </div>
                         </div>
                         <p v-if="remaining">
-                            To end up with a grade of {{ remaining }}, you will need {{ remainingAssignments }} on the
+                            To end up with a grade of {{ remaining }}%, you will need {{ remainingAssignments }}% on the
                             remaining assignments.
                         </p>
                     </div>
@@ -92,35 +92,38 @@
     },
     computed: {
       finalGrade() {
-        let average = 0
-        let weight = 0
-        for (let assignment in this.course.assignments) {
-          let info = this.course.assignments[assignment]
-          if (info.grade !== '' || info.weight !== '') {
-            weight += parseFloat(info.weight)
-            average += (parseFloat(info.grade) * parseFloat(info.weight)) / 100
-          }
-        }
-        average += parseFloat(this.prediction) * (100 - weight) / 100
-        return average
+        let average = this.average()
+        average += parseFloat(this.prediction) * (100 - this.weight()) / 100
+        return average.toFixed(2)
       },
       remainingAssignments() {
-        let average = 0
-        let weight = 0
-        for (let assignment in this.course.assignments) {
-          let info = this.course.assignments[assignment]
-          if (info.grade !== '' || info.weight !== '') {
-            weight += parseFloat(info.weight)
-            average += (parseFloat(info.grade) * parseFloat(info.weight)) / 100
-          }
-        }
-        let remains = this.remaining - average
-        let final = remains * 100 / weight
-        return final
+        return ((this.remaining - this.average()) * 100 / this.weight()).toFixed(2)
       }
     },
     mounted() {
       this.course = this.data
+    },
+    methods: {
+      average(){
+        let average = 0
+        for (let assignment in this.course.assignments) {
+          let info = this.course.assignments[assignment]
+          if (info.grade !== '' && info.weight !== '') {
+            average += (parseFloat(info.grade) * parseFloat(info.weight)) / 100
+          }
+        }
+        return average
+      },
+      weight(){
+        let weight = 0
+        for (let assignment in this.course.assignments) {
+          let info = this.course.assignments[assignment]
+          if (info.grade !== '' && info.weight !== '') {
+            weight += parseFloat(info.weight)
+          }
+        }
+        return weight
+      }
     }
   }
 </script>
