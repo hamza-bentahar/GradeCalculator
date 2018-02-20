@@ -50,6 +50,10 @@
                                 <input class="input" type="number" placeholder="Grade (%)" v-model="remaining">
                             </div>
                         </div>
+                        <p v-if="remaining">
+                            To end up with a grade of {{ remaining }}, you will need {{ remainingAssignments }} on the
+                            remaining assignments.
+                        </p>
                     </div>
                     <div class="column">
                         <div class="field">
@@ -58,16 +62,11 @@
                                 <input class="input" type="number" placeholder="Grade (%)" v-model="prediction">
                             </div>
                         </div>
+                        <p v-if="prediction">
+                            Your final grade is gonna be <strong>{{ finalGrade }}</strong> if you get {{ prediction }}% on
+                            the remaining assignments
+                        </p>
                     </div>
-                </div>
-                <div class="columns">
-                    <p v-if="remaining">
-                        coucou
-                    </p> <br>
-                    <p v-if="!isNaN(finalGrade)">
-                        Your final grade is gonna be <strong>{{ finalGrade }}</strong> if you get {{ prediction }}% on
-                        the remaining assignments
-                    </p>
                 </div>
             </div>
         </div>
@@ -95,18 +94,29 @@
       finalGrade() {
         let average = 0
         let weight = 0
-        for (let assignment in this.course.assignments){
+        for (let assignment in this.course.assignments) {
           let info = this.course.assignments[assignment]
           if (info.grade !== '' || info.weight !== '') {
             weight += parseFloat(info.weight)
-            average += (parseFloat(info.grade) * parseFloat(info.weight))/100
+            average += (parseFloat(info.grade) * parseFloat(info.weight)) / 100
           }
         }
-        average += parseFloat(this.prediction) * (100 - weight)/100
+        average += parseFloat(this.prediction) * (100 - weight) / 100
         return average
       },
       remainingAssignments() {
-        return this.course
+        let average = 0
+        let weight = 0
+        for (let assignment in this.course.assignments) {
+          let info = this.course.assignments[assignment]
+          if (info.grade !== '' || info.weight !== '') {
+            weight += parseFloat(info.weight)
+            average += (parseFloat(info.grade) * parseFloat(info.weight)) / 100
+          }
+        }
+        let remains = this.remaining - average
+        let final = remains * 100 / weight
+        return final
       }
     },
     mounted() {
