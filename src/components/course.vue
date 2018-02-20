@@ -1,7 +1,7 @@
 <template>
     <div class="tile is-parent">
         <div class="tile is-child box">
-            <div v-if="course">
+            <div v-if="course" @input="newInput">
                 <div class="field">
                     <div class="control">
                         <input class="input" type="text" placeholder="Course Name" v-model="data.name">
@@ -142,6 +142,9 @@
         if(confirm("Are you sure that you want to remove the course " + this.course.name + " from the list?")){
           Event.$emit('delete-course', this.course.id)
         }
+      },
+      newInput(){
+        Event.$emit('new-input', this.course)
       }
     }
   }

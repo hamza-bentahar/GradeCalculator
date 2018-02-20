@@ -30,8 +30,23 @@
       }
     },
     mounted(){
+      let courses = this.$ls.get('courses')
+      if (courses === null){
+        this.$ls.set('courses', this.courses)
+      }else{
+        this.courses = courses
+      }
       Event.$on('delete-course', id => {
         this.courses = this.courses.filter(course => course.id !== id)
+      })
+      Event.$on('new-input', data => {
+        courses = this.courses
+        let objIndex = courses.findIndex(obj => obj.id === data.id)
+        courses[objIndex].assignments = data.assignments
+        courses[objIndex].name = data.name
+        courses[objIndex].repeat = data.repeat
+        courses[objIndex].letterGrades = data.letterGrades
+        this.$ls.set('courses', courses)
       })
     },
     methods: {
@@ -68,9 +83,71 @@
               grade: '',
               weight: ''
             }
+          ],
+          letterGrades: [
+            {
+              letter: 'A+',
+              min: 97,
+              max: 100
+            },
+            {
+              letter: 'A',
+              min: 93,
+              max: 97
+            },
+            {
+              letter: 'A-',
+              min: 90,
+              max: 93
+            },
+            {
+              letter: 'B+',
+              min: 87,
+              max: 90
+            },
+            {
+              letter: 'B',
+              min: 83,
+              max: 87
+            },
+            {
+              letter: 'B-',
+              min: 80,
+              max: 83
+            },
+            {
+              letter: 'C+',
+              min: 77,
+              max: 80
+            },
+            {
+              letter: 'C',
+              min: 73,
+              max: 77
+            },
+            {
+              letter: 'C-',
+              min: 70,
+              max: 73
+            },{
+              letter: 'D+',
+              min: 67,
+              max: 70
+            },
+            {
+              letter: 'D',
+              min: 60,
+              max: 67
+            }
           ]
         }
         this.courses.push(course)
+      }
+    },
+    watch: {
+      courses(newVal, oldVal){
+        this.$ls.set('courses', newVal)
+        console.log(newVal)
       }
     }
   }
