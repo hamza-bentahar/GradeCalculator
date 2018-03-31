@@ -1,8 +1,8 @@
 <template>
     <div class="container is-fluid">
         <div class="columns is-multiline">
-            <div class="column is-4-desktop is-12-mobile is-6-tablet" v-for="course in courses">
-                <course :data="course"></course>
+            <div class="column is-4-desktop is-12-mobile is-6-tablet" v-for="course in courses" :key="course.id">
+                <course :data="course" :letter-grades="letterGrades"></course>
             </div>
             <div class="column is-4-desktop is-12-mobile is-6-tablet">
                 <div class="tile is-parent">
@@ -26,7 +26,80 @@
     },
     data() {
       return {
-        courses: []
+        courses: [],
+        letterGrades: [
+          {
+            letter: 'A+',
+            min: 97,
+            max: null,
+            gpa: 4.0
+          },
+          {
+            letter: 'A',
+            min: 93,
+            max: 97,
+            gpa: 4.0
+          },
+          {
+            letter: 'A-',
+            min: 90,
+            max: 93,
+            gpa: 3.7
+          },
+          {
+            letter: 'B+',
+            min: 87,
+            max: 90,
+            gpa: 3.3
+          },
+          {
+            letter: 'B',
+            min: 83,
+            max: 87,
+            gpa: 3.0
+          },
+          {
+            letter: 'B-',
+            min: 80,
+            max: 83,
+            gpa: 2.7
+          },
+          {
+            letter: 'C+',
+            min: 77,
+            max: 80,
+            gpa: 2.3
+          },
+          {
+            letter: 'C',
+            min: 73,
+            max: 77,
+            gpa: 2.0
+          },
+          {
+            letter: 'C-',
+            min: 70,
+            max: 73,
+            gpa: 1.7
+          },{
+            letter: 'D+',
+            min: 67,
+            max: 70,
+            gpa: 1.3
+          },
+          {
+            letter: 'D',
+            min: 60,
+            max: 67,
+            gpa: 1.0
+          },
+          {
+            letter: 'F',
+            min: null,
+            max: 60,
+            gpa: 0.0
+          }
+        ]
       }
     },
     mounted(){
@@ -56,6 +129,7 @@
         let course = {
           id: id,
           name: '',
+          credits: null,
           repeat: false,
           assignments: [
             {
@@ -84,62 +158,7 @@
               weight: ''
             }
           ],
-          letterGrades: [
-            {
-              letter: 'A+',
-              min: 97,
-              max: 100
-            },
-            {
-              letter: 'A',
-              min: 93,
-              max: 97
-            },
-            {
-              letter: 'A-',
-              min: 90,
-              max: 93
-            },
-            {
-              letter: 'B+',
-              min: 87,
-              max: 90
-            },
-            {
-              letter: 'B',
-              min: 83,
-              max: 87
-            },
-            {
-              letter: 'B-',
-              min: 80,
-              max: 83
-            },
-            {
-              letter: 'C+',
-              min: 77,
-              max: 80
-            },
-            {
-              letter: 'C',
-              min: 73,
-              max: 77
-            },
-            {
-              letter: 'C-',
-              min: 70,
-              max: 73
-            },{
-              letter: 'D+',
-              min: 67,
-              max: 70
-            },
-            {
-              letter: 'D',
-              min: 60,
-              max: 67
-            }
-          ]
+          letterGrades: this.letterGrades
         }
         this.courses.push(course)
       }
