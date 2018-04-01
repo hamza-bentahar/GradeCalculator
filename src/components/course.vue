@@ -1,6 +1,6 @@
 <template>
     <div class="tile is-parent">
-        <modal v-show="showModal" @close="showModal = false">
+        <modal v-show="showModal" @close="closeModal">
             <div class="card">
                 <header class="card-header">
                     <p class="card-header-title">
@@ -11,25 +11,27 @@
                     <div class="content">
                         <table class="table is-narrow">
                             <thead>
-                                <tr>
-                                    <th>Letter</th>
-                                    <th>Min</th>
-                                    <th>Max</th>
-                                </tr>
+                            <tr>
+                                <th>Letter</th>
+                                <th>Min</th>
+                                <th>Max</th>
+                            </tr>
                             </thead>
                             <tbody>
-                                <tr :key="index" v-for="(letterGrade, index) in userLetterGrades">
-                                    <td>{{ letterGrade.letter}}</td>
-                                    <td><input class="input is-small" type="text" v-model="letterGrade.min" v-if="letterGrade.min"></td>
-                                    <td><input class="input is-small" type="text" v-model="letterGrade.max" v-if="letterGrade.max"></td>
-                                </tr>
+                            <tr :key="index" v-for="(letterGrade, index) in userLetterGrades">
+                                <td>{{ letterGrade.letter}}</td>
+                                <td><input class="input is-small" type="text" v-model.number="letterGrade.min"
+                                           v-if="letterGrade.min"></td>
+                                <td><input class="input is-small" type="text" v-model.number="letterGrade.max"
+                                           v-if="letterGrade.max"></td>
+                            </tr>
                             </tbody>
                         </table>
                     </div>
                 </div>
                 <footer class="card-footer">
-                    <a href="#" class="card-footer-item">Save</a>
-                    <a href="#" class="card-footer-item">Reset</a>
+                    <a href="#" class="card-footer-item" @click="save">Save</a>
+                    <a href="#" class="card-footer-item" @click="reset">Reset</a>
                 </footer>
             </div>
         </modal>
@@ -159,7 +161,7 @@
     },
     mounted() {
       this.course = this.data
-      this.userLetterGrades = this.letterGrades
+      this.userLetterGrades = this.course.letterGrades
     },
     methods: {
       weightedAverage() {
@@ -192,6 +194,17 @@
       remove() {
         this.course.assignments.pop()
       },
+      save() {
+        this.course.letterGrades = this.userLetterGrades
+        Event.$emit('new-input', this.course)
+      },
+      reset() {
+        this.userLetterGrades = this.letterGrades
+        Event.$emit('new-input', this.course)
+      },
+      closeModal() {
+        this.showModal = false
+      },
       deleteCourse() {
         if (confirm("Are you sure that you want to remove the course " + this.course.name + " from the list?")) {
           Event.$emit('delete-course', this.course.id)
@@ -202,17 +215,15 @@
       },
       getLetterGrade(grade) {
         let result = ''
-        for (let letterGrade in this.course.letterGrades) {
-          let value = this.course.letterGrades[letterGrade]
-          if ((grade >= value.min) && (grade < value.max)) {
-            result = value.letter
+        this.course.letterGrades.forEach(function (element) {
+          if (!element.max && grade >= element.min) {
+            result = element.letter
+          } else if ((grade >= element.min) && (grade < element.max)) {
+            result = element.letter
+          } else if (!element.min && grade < element.max) {
+            result = element.letter
           }
-          else if (!value.max && grade >= value.min) {
-            result = value.letter
-          } else if (!value.min && grade < value.max) {
-            result = value.letter
-          }
-        }
+        })
         return result
       }
     }
