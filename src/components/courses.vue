@@ -17,7 +17,7 @@
                 </div>
             </div>
             <div class="column is-one-fifth">
-                <article class="tile notification">
+                <article class="tile notification fixed">
                     <div class="content">
                         <p class="subtitle">Compute Your GPA</p>
                         <div class="content">
@@ -182,7 +182,7 @@
         let course = {
           id: id,
           name: '',
-          credits: 0,
+          credits: null,
           grade: '',
           repeat: false,
           assignments: [
@@ -238,7 +238,9 @@
 </script>
 
 <style scoped>
-    .fixed {
-        position: fixed;
+    @media (min-width: 769px) {
+        .fixed {
+            position: fixed;
+        }
     }
 </style>

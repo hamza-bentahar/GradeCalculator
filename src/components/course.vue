@@ -46,7 +46,7 @@
                         </div>
                         <div class="field">
                             <div class="control">
-                                <input type="number" class="input" placeholder="Credits" v-model.number="data.credits" min="0" max="4" step="1">
+                                <input type="number" class="input" placeholder="Credits" v-model.number="data.credits" min="0" max="7" step="1">
                             </div>
                         </div>
                     </div>
