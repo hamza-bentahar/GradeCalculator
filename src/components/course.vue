@@ -38,10 +38,15 @@
         <div class="tile is-child box">
             <div v-if="course" @input="newInput">
                 <div class="columns">
-                    <div class="column is-9">
+                    <div class="column is-8">
                         <div class="field">
                             <div class="control">
                                 <input class="input" type="text" placeholder="Course Name" v-model="data.name">
+                            </div>
+                        </div>
+                        <div class="field">
+                            <div class="control">
+                                <input type="number" class="input" placeholder="Credits" v-model.number="data.credits" min="0" max="4" step="1">
                             </div>
                         </div>
                     </div>
@@ -84,6 +89,7 @@
                     </tr>
                     </tbody>
                 </table>
+                <h6>Your average grade : <strong>{{ weightedAverage()}} ({{ getLetterGrade(weightedAverage())}})</strong></h6>
                 <button class="button is-small is-primary" @click="add">Add Assignment</button>
                 <button class="button is-small is-danger" @click="remove">Remove last row</button>
                 <button class="button is-small is-danger" @click="deleteCourse">Remove this course from the list
@@ -153,10 +159,10 @@
     },
     computed: {
       finalGrade() {
-        return (((parseFloat(this.prediction) * this.remainingWeight()) / 100) + this.weightedAverage()).toFixed(2)
+        return (((parseFloat(this.prediction) * this.remainingWeight()) / 100) + this.average()).toFixed(2)
       },
       remainingAssignments() {
-        return (((this.remaining - this.weightedAverage()) * 100) / this.remainingWeight()).toFixed(2)
+        return (((this.remaining - this.average()) * 100) / this.remainingWeight()).toFixed(2)
       }
     },
     mounted() {
@@ -164,15 +170,25 @@
       this.userLetterGrades = this.course.letterGrades
     },
     methods: {
-      weightedAverage() {
+      average() {
         let weight = 0
-        for (let assignment in this.course.assignments) {
-          let info = this.course.assignments[assignment]
-          if (info.grade !== '' && info.weight !== '') {
-            weight += parseFloat(info.grade) * (parseFloat(info.weight) / 100)
+        this.course.assignments.forEach(assignment => {
+          if (assignment.grade !== '' && assignment.weight !== '') {
+            weight += parseFloat(assignment.grade) * (parseFloat(assignment.weight) / 100)
           }
-        }
+        })
         return weight
+      },
+      weightedAverage(){
+        let total = 0
+        this.course.assignments.forEach(assignment => {
+          if (assignment.grade !== '' && assignment.weight !== '') {
+            total += parseFloat(assignment.grade) * (parseFloat(assignment.weight) / (100 - this.remainingWeight()))
+          }
+        })
+        this.course.grade = this.getLetterGrade(total)
+        Event.$emit('new-input', this.course)
+        return total.toFixed(2)
       },
       remainingWeight() {
         let result = 0
