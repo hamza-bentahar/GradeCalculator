@@ -51,7 +51,13 @@
                         </div>
                     </div>
                     <div class="column">
-                        <button class="button" @click="showModal = true">Settings</button>
+                        <div class="field">
+                            <button class="button" @click="showModal = true">Settings</button>
+                        </div>
+                        <!--<div class="field">-->
+                            <!--<div class="control"><input type="checkbox" v-model="data.repeat" id="repeat"> <label-->
+                                    <!--for="repeat">Repeat</label></div>-->
+                        <!--</div>-->
                     </div>
                 </div>
                 <table class="table is-narrow">
@@ -82,7 +88,7 @@
                         <td>
                             <div class="field">
                                 <div class="control">
-                                    <input class="input is-small" type="number" v-model="assignment.weight">
+                                    <input class="input is-small" type="number" v-model.number="assignment.weight" min="0">
                                 </div>
                             </div>
                         </td>
