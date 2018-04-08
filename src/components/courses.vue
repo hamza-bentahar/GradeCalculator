@@ -1,52 +1,50 @@
 <template>
-    <div class="container is-fluid">
-        <div class="columns">
-            <div class="column">
-                <div class="columns is-multiline">
-                    <div class="column is-4-desktop is-12-mobile is-6-tablet" v-for="course in courses"
-                         :key="course.id">
-                        <course :data="course" :letter-grades="letterGrades"></course>
-                    </div>
-                    <div class="column is-4-desktop is-12-mobile is-6-tablet">
-                        <div class="tile is-parent">
-                            <div class="tile is-child box">
-                                <button class="button is-large is-primary" @click="addCourse">ADD COURSE</button>
-                            </div>
+    <div class="columns">
+        <div class="column">
+            <div class="columns is-multiline">
+                <div class="column is-4-desktop is-12-mobile is-6-tablet" v-for="course in courses"
+                     :key="course.id">
+                    <course :data="course" :letter-grades="letterGrades"></course>
+                </div>
+                <div class="column is-4-desktop is-12-mobile is-6-tablet">
+                    <div class="tile is-parent">
+                        <div class="tile is-child box">
+                            <button class="button is-large is-primary" @click="addCourse">ADD COURSE</button>
                         </div>
                     </div>
                 </div>
             </div>
-            <div class="column is-one-fifth">
-                <article class="tile notification fixed">
+        </div>
+        <div class="column is-one-fifth">
+            <article class="tile notification fixed">
+                <div class="content">
+                    <p class="subtitle">Compute Your GPA</p>
                     <div class="content">
-                        <p class="subtitle">Compute Your GPA</p>
-                        <div class="content">
-                            <div>
-                                <div class="field">
-                                    <div class="control">
-                                        <label for="credits">Credits Earned</label>
-                                        <input type="number" class="input" placeholder="Credits Earned" id="credits"
-                                               v-model.number="earnedCredits" min="0">
-                                    </div>
-                                </div>
-                                <div class="field">
-                                    <div class="control">
-                                        <label for="gpa">Overall GPA</label>
-                                        <input type="number" class="input" placeholder="Overall GPA" id="gpa"
-                                               v-model.number="overallGpa" min="0" max="4">
-                                    </div>
+                        <div>
+                            <div class="field">
+                                <div class="control">
+                                    <label for="credits">Credits Earned</label>
+                                    <input type="number" class="input" placeholder="Credits Earned" id="credits"
+                                           v-model.number="earnedCredits" min="0">
                                 </div>
                             </div>
-                            <hr>
-                            <p class="subtitle">Results</p>
-                            <p>Number of credits for this semester: <strong>{{ totalCreditsForSemester() }}</strong></p>
-                            <p>Number of credits after this semester: <strong>{{ overallTotalCredits( )}}</strong></p>
-                            <p>GPA for this semester: <strong>{{ semesterGpa }}</strong></p>
-                            <p>Overall GPA: <strong>{{ totalGpa }}</strong></p>
+                            <div class="field">
+                                <div class="control">
+                                    <label for="gpa">Overall GPA</label>
+                                    <input type="number" class="input" placeholder="Overall GPA" id="gpa"
+                                           v-model.number="overallGpa" min="0" max="4">
+                                </div>
+                            </div>
                         </div>
+                        <hr>
+                        <p class="subtitle">Results</p>
+                        <p>Number of credits for this semester: <strong>{{ totalCreditsForSemester() }}</strong></p>
+                        <p>Number of credits after this semester: <strong>{{ overallTotalCredits( )}}</strong></p>
+                        <p>GPA for this semester: <strong>{{ semesterGpa }}</strong></p>
+                        <p>Overall GPA: <strong>{{ totalGpa }}</strong></p>
                     </div>
-                </article>
-            </div>
+                </div>
+            </article>
         </div>
     </div>
 </template>
@@ -165,13 +163,13 @@
         let total = 0
         this.courses.forEach(course => {
           let result = this.letterGrades.find(letterGrade => letterGrade.letter === course.grade)
-          if (result){
+          if (result) {
             total += result.gpa * course.credits
           }
         })
         return (total / this.totalCreditsForSemester()).toFixed(2)
       },
-      totalGpa(){
+      totalGpa() {
         return (this.overallGpa * ((this.overallTotalCredits() - this.totalCreditsForSemester()) / this.overallTotalCredits()) + this.semesterGpa * (this.totalCreditsForSemester() / this.overallTotalCredits())).toFixed(2)
       }
     },
