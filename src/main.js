@@ -8,7 +8,7 @@ require('./assets/sass/main.scss');
 
 Vue.use(VueLocalStorage)
 Vue.use(VueAnalytics, {
-  id: 'UA-117158565-1'
+  id: 'UA-117165803-1'
 })
 Vue.config.productionTip = false
 
