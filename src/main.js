@@ -1,15 +1,14 @@
 import Vue from 'vue'
 import App from './App.vue'
 import VueLocalStorage from 'vue-ls'
-import VueAnalytics from 'vue-analytics'
+import Toasted from 'vue-toasted'
 /* eslint-disable */
 
-require('./assets/sass/main.scss');
+require('./assets/sass/main.scss')
+import './assets/css/font-awesome.min.css'
 
+Vue.use(Toasted)
 Vue.use(VueLocalStorage)
-Vue.use(VueAnalytics, {
-  id: 'UA-117165803-1'
-})
 Vue.config.productionTip = false
 
 Event = new Vue()

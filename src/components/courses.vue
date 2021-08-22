@@ -229,7 +229,6 @@
     },
     watch: {
       courses(newVal, oldVal) {
-        this.$ls.set('courses', newVal)
       }
     }
   }

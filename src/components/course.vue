@@ -9,6 +9,12 @@
                 </header>
                 <div class="card-content">
                     <div class="content">
+                        <div class="notification is-primary">
+                            <p>
+                                Here you can you change the official grades of the course <strong>{{ this.data.name }}</strong>,
+                                by changing the mark range for each letter grade.
+                            </p>
+                        </div>
                         <table class="table is-narrow">
                             <thead>
                             <tr>
@@ -20,10 +26,10 @@
                             <tbody>
                             <tr :key="index" v-for="(letterGrade, index) in userLetterGrades">
                                 <td>{{ letterGrade.letter}}</td>
-                                <td><input class="input is-small" type="text" v-model.number="letterGrade.min"
-                                           v-if="letterGrade.min"></td>
-                                <td><input class="input is-small" type="text" v-model.number="letterGrade.max"
-                                           v-if="letterGrade.max"></td>
+                                <td><input class="input is-small" type="number" v-model.number="letterGrade.min"
+                                           v-if="letterGrade.min !== null"></td>
+                                <td><input class="input is-small" type="number" v-model.number="letterGrade.max"
+                                           v-if="letterGrade.max != null"></td>
                             </tr>
                             </tbody>
                         </table>
@@ -46,17 +52,19 @@
                         </div>
                         <div class="field">
                             <div class="control">
-                                <input type="number" class="input" placeholder="Credits" v-model.number="data.credits" min="0" max="7" step="1">
+                                <input type="number" class="input" placeholder="Credits" v-model.number="data.credits"
+                                       min="0" max="7" step="1">
                             </div>
                         </div>
                     </div>
                     <div class="column">
                         <div class="field">
-                            <button class="button" @click="showModal = true">Settings</button>
+                            <button class="button" @click="showModal = true"><span><i
+                                    class="fa fa-cog"></i> Settings</span></button>
                         </div>
                         <!--<div class="field">-->
-                            <!--<div class="control"><input type="checkbox" v-model="data.repeat" id="repeat"> <label-->
-                                    <!--for="repeat">Repeat</label></div>-->
+                        <!--<div class="control"><input type="checkbox" v-model="data.repeat" id="repeat"> <label-->
+                        <!--for="repeat">Repeat</label></div>-->
                         <!--</div>-->
                     </div>
                 </div>
@@ -64,17 +72,19 @@
                     <thead>
                     <tr>
                         <th>Assignment</th>
-                        <th>Grade</th>
-                        <th>Weight</th>
+                        <th>Grade (%)</th>
+                        <th>Weight (%)</th>
+                        <th></th>
                     </tr>
                     </thead>
                     <tbody>
                     <tr v-for="(assignment, index) in course.assignments" :key="index">
                         <td>
                             <div class="field">
-                                <div class="control">
-                                    <input class="input is-small" type="text" placeholder="Name"
+                                <div class="control has-icons-right">
+                                    <input class="input is-small" type="email" placeholder="Name"
                                            v-model="assignment.name">
+                                    <span class="icon is-right" v-if="valid(index)"><i class="fa fa-check has-text-success"></i></span>
                                 </div>
                             </div>
                         </td>
@@ -88,17 +98,24 @@
                         <td>
                             <div class="field">
                                 <div class="control">
-                                    <input class="input is-small" type="number" v-model.number="assignment.weight" min="0">
+                                    <input class="input is-small" type="number" v-model.number="assignment.weight"
+                                           min="0">
                                 </div>
                             </div>
+                        </td>
+                        <td>
+                            <i class="fa fa-minus-circle has-text-danger pointer" @click="removeAssignment(index)"></i>
                         </td>
                     </tr>
                     </tbody>
                 </table>
-                <h6>Your average grade : <strong>{{ weightedAverage()}} ({{ getLetterGrade(weightedAverage())}})</strong></h6>
-                <button class="button is-small is-primary" @click="add">Add Assignment</button>
-                <button class="button is-small is-danger" @click="remove">Remove last row</button>
-                <button class="button is-small is-danger" @click="deleteCourse">Remove this course from the list
+                <h6>Your average grade : <strong>
+                    {{ weightedAverage() ? weightedAverage() + '%' : ''}}
+                    {{ getLetterGrade(weightedAverage()) ? '(' + getLetterGrade(weightedAverage()) + ')' : 'Add an assignment to compute your grade'}}
+                </strong></h6>
+                <button class="button is-small is-primary" @click="add"><span><i class="fa fa-plus"></i> Add Assignment</span>
+                </button>
+                <button class="button is-small is-danger" @click="deleteCourse"><span><i class="fa fa-times"> Remove this course</i></span>
                 </button>
                 <hr>
                 <div class="columns">
@@ -185,16 +202,18 @@
         })
         return weight
       },
-      weightedAverage(){
+      weightedAverage() {
         let total = 0
+        let cnt = 0
         this.course.assignments.forEach(assignment => {
           if (assignment.grade !== '' && assignment.weight !== '') {
+            cnt ++
             total += parseFloat(assignment.grade) * (parseFloat(assignment.weight) / (100 - this.remainingWeight()))
           }
         })
         this.course.grade = this.getLetterGrade(total)
         Event.$emit('new-input', this.course)
-        return total.toFixed(2)
+        return cnt ? total.toFixed(2) : null
       },
       remainingWeight() {
         let result = 0
@@ -213,16 +232,29 @@
           weight: ''
         })
       },
-      remove() {
-        this.course.assignments.pop()
+      removeAssignment(index) {
+        this.course.assignments.splice(index, 1)
+        console.log(index)
       },
-      save() {
+      save(close = true) {
         this.course.letterGrades = this.userLetterGrades
         Event.$emit('new-input', this.course)
+        this.$toasted.show('Settings saved', {
+          theme: "toasted-primary",
+          position: "top-right",
+          duration : 3000
+        })
+        if (close) this.closeModal()
       },
       reset() {
         this.userLetterGrades = this.letterGrades
         Event.$emit('new-input', this.course)
+        this.$toasted.show('Settings reset and saved', {
+          theme: "toasted-primary",
+          position: "top-right",
+          duration : 3000
+        })
+        this.save(false)
       },
       closeModal() {
         this.showModal = false
@@ -237,21 +269,29 @@
       },
       getLetterGrade(grade) {
         let result = ''
-        this.course.letterGrades.forEach(function (element) {
-          if (!element.max && grade >= element.min) {
-            result = element.letter
-          } else if ((grade >= element.min) && (grade < element.max)) {
-            result = element.letter
-          } else if (!element.min && grade < element.max) {
-            result = element.letter
-          }
-        })
+        if (grade) {
+          this.course.letterGrades.forEach(function (element) {
+            if (!element.max && grade >= element.min) {
+              result = element.letter
+            } else if ((grade >= element.min) && (grade < element.max)) {
+              result = element.letter
+            } else if (!element.min && grade < element.max) {
+              result = element.letter
+            }
+          })
+        }
         return result
+      },
+      valid(index) {
+        // console.log(this.course.assignments[index].grade && this.course.assignments[index].weight)
+        return this.course.assignments[index].grade && this.course.assignments[index].weight
       }
     }
   }
 </script>
 
 <style scoped>
-
+    .pointer:hover {
+        cursor: pointer;
+    }
 </style>
