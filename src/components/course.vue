@@ -1,45 +1,7 @@
 <template>
     <div class="tile is-parent">
         <modal v-show="showModal" @close="closeModal">
-            <div class="card">
-                <header class="card-header">
-                    <p class="card-header-title">
-                        Change Letter Grades for {{ data.name }}
-                    </p>
-                </header>
-                <div class="card-content">
-                    <div class="content">
-                        <div class="notification is-primary">
-                            <p>
-                                Here you can you change the official grades of the course <strong>{{ this.data.name }}</strong>,
-                                by changing the mark range for each letter grade.
-                            </p>
-                        </div>
-                        <table class="table is-narrow">
-                            <thead>
-                            <tr>
-                                <th>Letter</th>
-                                <th>Min</th>
-                                <th>Max</th>
-                            </tr>
-                            </thead>
-                            <tbody>
-                            <tr :key="index" v-for="(letterGrade, index) in userLetterGrades">
-                                <td>{{ letterGrade.letter}}</td>
-                                <td><input class="input is-small" type="number" v-model.number="letterGrade.min"
-                                           v-if="letterGrade.min !== null"></td>
-                                <td><input class="input is-small" type="number" v-model.number="letterGrade.max"
-                                           v-if="letterGrade.max != null"></td>
-                            </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-                <footer class="card-footer">
-                    <a href="#" class="card-footer-item" @click="save">Save</a>
-                    <a href="#" class="card-footer-item" @click="reset">Reset</a>
-                </footer>
-            </div>
+          <course-settings :course-name="data.name" :letter-grades="letterGrades" :course="course"></course-settings>
         </modal>
         <div class="tile is-child box">
             <div v-if="course" @input="newInput">
@@ -59,13 +21,10 @@
                     </div>
                     <div class="column">
                         <div class="field">
-                            <button class="button" @click="showModal = true"><span><i
-                                    class="fa fa-cog"></i> Settings</span></button>
+                            <button class="button" @click="showModal = true">
+                              <span><i class="fa fa-cog"></i> Settings</span>
+                            </button>
                         </div>
-                        <!--<div class="field">-->
-                        <!--<div class="control"><input type="checkbox" v-model="data.repeat" id="repeat"> <label-->
-                        <!--for="repeat">Repeat</label></div>-->
-                        <!--</div>-->
                     </div>
                 </div>
                 <table class="table is-narrow">
@@ -98,8 +57,7 @@
                         <td>
                             <div class="field">
                                 <div class="control">
-                                    <input class="input is-small" type="number" v-model.number="assignment.weight"
-                                           min="0">
+                                    <input class="input is-small" type="number" v-model.number="assignment.weight" min="0">
                                 </div>
                             </div>
                         </td>
@@ -156,11 +114,13 @@
 <script>
   /* eslint-disable */
   import modal from './modal'
+  import courseSettings from "./courseSettings"
 
   export default {
     name: "course",
     components: {
-      modal
+      modal,
+      courseSettings
     },
     props: {
       data: {
@@ -176,8 +136,7 @@
         course: null,
         prediction: null,
         remaining: null,
-        showModal: false,
-        userLetterGrades: []
+        showModal: false
       }
     },
     computed: {
@@ -190,7 +149,12 @@
     },
     mounted() {
       this.course = this.data
-      this.userLetterGrades = this.course.letterGrades
+      Event.$on('updated-course-settings', (val) => {
+        this.course.letterGrades = val
+      })
+      Event.$on('close-settings-modal', () => {
+        this.closeModal()
+      })
     },
     methods: {
       average() {
@@ -235,26 +199,6 @@
       removeAssignment(index) {
         this.course.assignments.splice(index, 1)
         console.log(index)
-      },
-      save(close = true) {
-        this.course.letterGrades = this.userLetterGrades
-        Event.$emit('new-input', this.course)
-        this.$toasted.show('Settings saved', {
-          theme: "toasted-primary",
-          position: "top-right",
-          duration : 3000
-        })
-        if (close) this.closeModal()
-      },
-      reset() {
-        this.userLetterGrades = this.letterGrades
-        Event.$emit('new-input', this.course)
-        this.$toasted.show('Settings reset and saved', {
-          theme: "toasted-primary",
-          position: "top-right",
-          duration : 3000
-        })
-        this.save(false)
       },
       closeModal() {
         this.showModal = false
