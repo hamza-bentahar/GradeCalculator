@@ -84,7 +84,48 @@ const state = {
   ]
 }
 const getters = {}
-const mutations = {}
+const mutations = {
+  addCourse(state) {
+    let id = state.courses[state.courses.length - 1]
+    id = id === undefined ? 0 : id.id + 1;
+    let course = {
+      id: id,
+      name: '',
+      credits: null,
+      grade: '',
+      repeat: false,
+      assignments: [
+        {
+          name: '',
+          grade: '',
+          weight: ''
+        },
+        {
+          name: '',
+          grade: '',
+          weight: ''
+        },
+        {
+          name: '',
+          grade: '',
+          weight: ''
+        },
+        {
+          name: '',
+          grade: '',
+          weight: ''
+        },
+        {
+          name: '',
+          grade: '',
+          weight: ''
+        }
+      ],
+      letterGrades: this.letterGrades
+    }
+    state.courses.push(course)
+  },
+}
 const actions = {}
 
 const store = new Vuex.Store({
