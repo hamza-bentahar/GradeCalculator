@@ -81,9 +81,21 @@ const state = {
       max: 60,
       gpa: 0.0
     }
-  ]
+  ],
+  earnedCredits: null,
+  overallGpa: null,
 }
-const getters = {}
+const getters = {
+  getTotalCreditsForSemester(state) {
+    let total = 0
+    state.courses.forEach(course => {
+      if (Number.isInteger(course.credits)) {
+        total += course.credits
+      }
+    })
+    return total
+  },
+}
 const mutations = {
   addCourse(state) {
     let id = state.courses[state.courses.length - 1]

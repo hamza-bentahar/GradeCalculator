@@ -38,7 +38,7 @@
                         </div>
                         <hr>
                         <p class="subtitle">Results</p>
-                        <p>Number of credits for this semester: <strong>{{ totalCreditsForSemester() }}</strong></p>
+                        <p>Number of credits for this semester: <strong>{{ getTotalCreditsForSemester() }}</strong></p>
                         <p>Number of credits after this semester: <strong>{{ overallTotalCredits( )}}</strong></p>
                         <p>GPA for this semester: <strong>{{ semesterGpa }}</strong></p>
                         <p>Overall GPA: <strong>{{ totalGpa }}</strong></p>
@@ -52,18 +52,12 @@
 <script>
   /* eslint-disable */
   import Course from './course'
-  import {mapState, mapMutations} from 'vuex'
+  import {mapState, mapMutations, mapGetters} from 'vuex'
 
   export default {
     name: "courses",
     components: {
       Course
-    },
-    data() {
-      return {
-        earnedCredits: null,
-        overallGpa: null
-      }
     },
     mounted() {
       Event.$on('new-input', data => {
@@ -75,7 +69,7 @@
       })
     },
     computed: {
-      ...mapState(['courses', 'letterGrades']),
+      ...mapState(['courses', 'letterGrades', 'earnedCredits', 'overallGpa']),
       semesterGpa() {
         let total = 0
         this.courses.forEach(course => {
@@ -84,25 +78,17 @@
             total += result.gpa * course.credits
           }
         })
-        return (total / this.totalCreditsForSemester()).toFixed(2)
+        return (total / this.getTotalCreditsForSemester()).toFixed(2)
       },
       totalGpa() {
-        return (this.overallGpa * ((this.overallTotalCredits() - this.totalCreditsForSemester()) / this.overallTotalCredits()) + this.semesterGpa * (this.totalCreditsForSemester() / this.overallTotalCredits())).toFixed(2)
+        return (this.overallGpa * ((this.overallTotalCredits() - this.getTotalCreditsForSemester()) / this.overallTotalCredits()) + this.semesterGpa * (this.getTotalCreditsForSemester() / this.overallTotalCredits())).toFixed(2)
       }
     },
     methods: {
       ...mapMutations(['addCourse']),
-      totalCreditsForSemester() {
-        let total = 0
-        this.courses.forEach(course => {
-          if (Number.isInteger(course.credits)) {
-            total += course.credits
-          }
-        })
-        return total
-      },
+      ...mapGetters(['getTotalCreditsForSemester']),
       overallTotalCredits() {
-        return this.totalCreditsForSemester() + this.earnedCredits
+        return this.getTotalCreditsForSemester() + this.earnedCredits
       }
     }
   }
