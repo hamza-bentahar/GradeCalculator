@@ -142,6 +142,9 @@ const mutations = {
     if (confirm("Are you sure that you want to remove the course " + course.name + " from the list?")) {
       state.courses = state.courses.filter(course => course.id !== id)
     }
+  },
+  updateEarnedCredits(state, credits) {
+    state.earnedCredits = credits
   }
 }
 const actions = {}

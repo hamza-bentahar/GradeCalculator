@@ -69,7 +69,15 @@
       })
     },
     computed: {
-      ...mapState(['courses', 'letterGrades', 'earnedCredits', 'overallGpa']),
+      ...mapState(['courses', 'letterGrades', 'overallGpa']),
+      earnedCredits: {
+        get () {
+          return this.$store.state.earnedCredits
+        },
+        set (value) {
+          this.$store.commit('updateEarnedCredits', value)
+        }
+      },
       semesterGpa() {
         let total = 0
         this.courses.forEach(course => {
