@@ -159,6 +159,9 @@ const mutations = {
   },
   updateEarnedCredits(state, credits) {
     state.earnedCredits = credits
+  },
+  updateOverallGPA(state, gpa) {
+    state.overallGpa = gpa
   }
 }
 const actions = {}

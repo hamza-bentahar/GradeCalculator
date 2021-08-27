@@ -69,7 +69,7 @@
       })
     },
     computed: {
-      ...mapState(['courses', 'letterGrades', 'overallGpa']),
+      ...mapState(['courses', 'letterGrades']),
       ...mapGetters(['getTotalCreditsForSemester', 'getTotalCreditsAfterCurrentSemester', 'getCurrentSemesterGPA']),
       earnedCredits: {
         get () {
@@ -77,6 +77,14 @@
         },
         set (value) {
           this.$store.commit('updateEarnedCredits', value)
+        }
+      },
+      overallGpa: {
+        get () {
+          return this.$store.state.overallGpa
+        },
+        set (value) {
+          this.$store.commit('updateOverallGPA', value)
         }
       },
       totalGpa() {
