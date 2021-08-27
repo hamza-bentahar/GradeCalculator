@@ -58,5 +58,9 @@ export default {
 </script>
 
 <style scoped>
-
+@media (min-width: 769px) {
+  .fixed {
+    position: fixed;
+  }
+}
 </style>
