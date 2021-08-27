@@ -41,7 +41,7 @@
                         <p>Number of credits for this semester: <strong>{{ getTotalCreditsForSemester }}</strong></p>
                         <p>Number of credits after this semester: <strong>{{ getTotalCreditsAfterCurrentSemester }}</strong></p>
                         <p>GPA for this semester: <strong>{{ getCurrentSemesterGPA }}</strong></p>
-                        <p>Overall GPA: <strong>{{ totalGpa }}</strong></p>
+                        <p>Overall GPA: <strong>{{ getTotalGPA }}</strong></p>
                     </div>
                 </div>
             </article>
@@ -70,7 +70,8 @@
     },
     computed: {
       ...mapState(['courses', 'letterGrades']),
-      ...mapGetters(['getTotalCreditsForSemester', 'getTotalCreditsAfterCurrentSemester', 'getCurrentSemesterGPA']),
+      ...mapGetters(['getTotalCreditsForSemester', 'getTotalCreditsAfterCurrentSemester', 'getCurrentSemesterGPA',
+        'getTotalGPA']),
       earnedCredits: {
         get () {
           return this.$store.state.earnedCredits
@@ -86,9 +87,6 @@
         set (value) {
           this.$store.commit('updateOverallGPA', value)
         }
-      },
-      totalGpa() {
-        return (this.overallGpa * ((this.getTotalCreditsAfterCurrentSemester - this.getTotalCreditsForSemester) / this.getTotalCreditsAfterCurrentSemester) + this.getCurrentSemesterGPA * (this.getTotalCreditsForSemester / this.getTotalCreditsAfterCurrentSemester)).toFixed(2)
       }
     },
     methods: {

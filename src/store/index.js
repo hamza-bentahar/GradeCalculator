@@ -108,6 +108,9 @@ const getters = {
       }
     })
     return (total / getters.getTotalCreditsForSemester).toFixed(2)
+  },
+  getTotalGPA(state, getters) {
+    return (state.overallGpa * ((getters.getTotalCreditsAfterCurrentSemester - getters.getTotalCreditsForSemester) / getters.getTotalCreditsAfterCurrentSemester) + getters.getCurrentSemesterGPA * (getters.getTotalCreditsForSemester / getters.getTotalCreditsAfterCurrentSemester)).toFixed(2)
   }
 }
 const mutations = {
