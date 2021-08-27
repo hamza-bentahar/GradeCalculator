@@ -59,13 +59,10 @@
                     </div>
                     <div class="column">
                         <div class="field">
-                            <button class="button" @click="showModal = true"><span><i
-                                    class="fa fa-cog"></i> Settings</span></button>
+                            <button class="button" @click="showModal = true">
+                              <span><i class="fa fa-cog"></i> Settings</span>
+                            </button>
                         </div>
-                        <!--<div class="field">-->
-                        <!--<div class="control"><input type="checkbox" v-model="data.repeat" id="repeat"> <label-->
-                        <!--for="repeat">Repeat</label></div>-->
-                        <!--</div>-->
                     </div>
                 </div>
                 <table class="table is-narrow">
@@ -98,8 +95,7 @@
                         <td>
                             <div class="field">
                                 <div class="control">
-                                    <input class="input is-small" type="number" v-model.number="assignment.weight"
-                                           min="0">
+                                    <input class="input is-small" type="number" v-model.number="assignment.weight" min="0">
                                 </div>
                             </div>
                         </td>

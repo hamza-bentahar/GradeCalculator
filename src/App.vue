@@ -4,7 +4,7 @@
         <div class="container is-fluid">
             <courses></courses>
         </div>
-        <modal v-show="showModal" @close="closeModal">
+        <modal v-show="showModal" @close="showModal = false">
             <about></about>
         </modal>
     </div>
@@ -25,11 +25,6 @@
     data(){
       return{
         showModal: false
-      }
-    },
-    methods: {
-      closeModal(){
-        this.showModal = false
       }
     }
   }
