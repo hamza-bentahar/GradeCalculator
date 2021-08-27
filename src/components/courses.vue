@@ -66,9 +66,6 @@
       }
     },
     mounted() {
-      Event.$on('delete-course', id => {
-        this.courses = this.courses.filter(course => course.id !== id)
-      })
       Event.$on('new-input', data => {
         let objIndex = this.courses.findIndex(obj => obj.id === data.id)
         this.courses[objIndex].assignments = data.assignments

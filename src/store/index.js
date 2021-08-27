@@ -125,6 +125,12 @@ const mutations = {
     }
     state.courses.push(course)
   },
+  deleteCourse(state, id) {
+    const course = state.courses.find(course => course.id === id)
+    if (confirm("Are you sure that you want to remove the course " + course.name + " from the list?")) {
+      state.courses = state.courses.filter(course => course.id !== id)
+    }
+  }
 }
 const actions = {}
 

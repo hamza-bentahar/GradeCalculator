@@ -73,7 +73,7 @@
                 </strong></h6>
                 <button class="button is-small is-primary" @click="add"><span><i class="fa fa-plus"></i> Add Assignment</span>
                 </button>
-                <button class="button is-small is-danger" @click="deleteCourse"><span><i class="fa fa-times"> Remove this course</i></span>
+                <button class="button is-small is-danger" @click="deleteCourse(course.id)"><span><i class="fa fa-times"> Remove this course</i></span>
                 </button>
                 <hr>
                 <div class="columns">
@@ -115,6 +115,7 @@
   /* eslint-disable */
   import modal from './modal'
   import courseSettings from "./courseSettings"
+  import {mapMutations} from 'vuex'
 
   export default {
     name: "course",
@@ -157,6 +158,7 @@
       })
     },
     methods: {
+      ...mapMutations(['deleteCourse']),
       average() {
         let weight = 0
         this.course.assignments.forEach(assignment => {
@@ -202,11 +204,6 @@
       },
       closeModal() {
         this.showModal = false
-      },
-      deleteCourse() {
-        if (confirm("Are you sure that you want to remove the course " + this.course.name + " from the list?")) {
-          Event.$emit('delete-course', this.course.id)
-        }
       },
       newInput() {
         Event.$emit('new-input', this.course)
