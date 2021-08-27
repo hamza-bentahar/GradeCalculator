@@ -95,6 +95,20 @@ const getters = {
     })
     return total
   },
+  getTotalCreditsAfterCurrentSemester(state, getters){
+    return getters.getTotalCreditsForSemester + state.earnedCredits
+  },
+  getCurrentSemesterGPA(state, getters) {
+    let total = 0
+    state.courses.forEach(course => {
+      // TODO: find letter grade specific to the course
+      let result = state.letterGrades.find(letterGrade => letterGrade.letter === course.grade)
+      if (result) {
+        total += result.gpa * course.credits
+      }
+    })
+    return (total / getters.getTotalCreditsForSemester).toFixed(2)
+  }
 }
 const mutations = {
   addCourse(state) {

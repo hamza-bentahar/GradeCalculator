@@ -38,9 +38,9 @@
                         </div>
                         <hr>
                         <p class="subtitle">Results</p>
-                        <p>Number of credits for this semester: <strong>{{ getTotalCreditsForSemester() }}</strong></p>
-                        <p>Number of credits after this semester: <strong>{{ overallTotalCredits( )}}</strong></p>
-                        <p>GPA for this semester: <strong>{{ semesterGpa }}</strong></p>
+                        <p>Number of credits for this semester: <strong>{{ getTotalCreditsForSemester }}</strong></p>
+                        <p>Number of credits after this semester: <strong>{{ getTotalCreditsAfterCurrentSemester }}</strong></p>
+                        <p>GPA for this semester: <strong>{{ getCurrentSemesterGPA }}</strong></p>
                         <p>Overall GPA: <strong>{{ totalGpa }}</strong></p>
                     </div>
                 </div>
@@ -70,6 +70,7 @@
     },
     computed: {
       ...mapState(['courses', 'letterGrades', 'overallGpa']),
+      ...mapGetters(['getTotalCreditsForSemester', 'getTotalCreditsAfterCurrentSemester', 'getCurrentSemesterGPA']),
       earnedCredits: {
         get () {
           return this.$store.state.earnedCredits
@@ -78,26 +79,12 @@
           this.$store.commit('updateEarnedCredits', value)
         }
       },
-      semesterGpa() {
-        let total = 0
-        this.courses.forEach(course => {
-          let result = this.letterGrades.find(letterGrade => letterGrade.letter === course.grade)
-          if (result) {
-            total += result.gpa * course.credits
-          }
-        })
-        return (total / this.getTotalCreditsForSemester()).toFixed(2)
-      },
       totalGpa() {
-        return (this.overallGpa * ((this.overallTotalCredits() - this.getTotalCreditsForSemester()) / this.overallTotalCredits()) + this.semesterGpa * (this.getTotalCreditsForSemester() / this.overallTotalCredits())).toFixed(2)
+        return (this.overallGpa * ((this.getTotalCreditsAfterCurrentSemester - this.getTotalCreditsForSemester) / this.getTotalCreditsAfterCurrentSemester) + this.getCurrentSemesterGPA * (this.getTotalCreditsForSemester / this.getTotalCreditsAfterCurrentSemester)).toFixed(2)
       }
     },
     methods: {
       ...mapMutations(['addCourse']),
-      ...mapGetters(['getTotalCreditsForSemester']),
-      overallTotalCredits() {
-        return this.getTotalCreditsForSemester() + this.earnedCredits
-      }
     }
   }
 </script>
