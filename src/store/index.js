@@ -98,12 +98,12 @@ const getters = {
 }
 const mutations = {
   addCourse(state) {
-    let id = state.courses[state.courses.length - 1]
-    id = id === undefined ? 0 : id.id + 1;
+    let lastCourse = state.courses[state.courses.length - 1]
+    const id = lastCourse === undefined ? 0 : lastCourse.id + 1;
     let course = {
       id: id,
       name: '',
-      credits: null,
+      credits: 3,
       grade: '',
       repeat: false,
       assignments: [
