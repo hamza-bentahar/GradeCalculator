@@ -1,7 +1,7 @@
 <template>
   <div class="columns is-multiline">
       <div class="column is-4-desktop is-12-mobile is-6-tablet" v-for="course in courses" :key="course.id">
-          <course :data="course" :letter-grades="letterGrades"/>
+          <course :letter-grades="letterGrades" :course-id="course.id"/>
       </div>
       <div class="column is-4-desktop is-12-mobile is-6-tablet">
           <div class="tile is-parent">

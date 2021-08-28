@@ -1,7 +1,7 @@
 <template>
     <div class="tile is-parent">
         <modal v-show="showModal" @close="closeModal">
-          <course-settings :course-name="data.name" :letter-grades="letterGrades" :course="course"></course-settings>
+          <course-settings :course-name="course.name" :letter-grades="letterGrades" :course="course"></course-settings>
         </modal>
         <div class="tile is-child box">
             <div v-if="course" @input="newInput">
@@ -9,12 +9,12 @@
                     <div class="column is-8">
                         <div class="field">
                             <div class="control">
-                                <input class="input" type="text" placeholder="Course Name" v-model="data.name">
+                                <input class="input" type="text" placeholder="Course Name" v-model="course.name">
                             </div>
                         </div>
                         <div class="field">
                             <div class="control">
-                                <input type="number" class="input" placeholder="Credits" v-model.number="data.credits"
+                                <input type="number" class="input" placeholder="Credits" v-model.number="course.credits"
                                        min="0" max="7" step="1">
                             </div>
                         </div>
@@ -115,7 +115,7 @@
   /* eslint-disable */
   import modal from './modal'
   import courseSettings from "./courseSettings"
-  import {mapMutations} from 'vuex'
+  import {mapMutations, mapGetters} from 'vuex'
 
   export default {
     name: "course",
@@ -124,23 +124,26 @@
       courseSettings
     },
     props: {
-      data: {
-        required: true,
-        type: Object
-      },
       letterGrades: {
         type: Array
+      },
+      courseId: {
+        type: Number,
+        required: true
       }
     },
     data() {
       return {
-        course: null,
         prediction: null,
         remaining: null,
         showModal: false
       }
     },
     computed: {
+      ...mapGetters(['getCourseById']),
+      course() {
+        return this.getCourseById(this.courseId)
+      },
       finalGrade() {
         return (((parseFloat(this.prediction) * this.remainingWeight()) / 100) + this.average()).toFixed(2)
       },
@@ -149,7 +152,6 @@
       }
     },
     mounted() {
-      this.course = this.data
       Event.$on('updated-course-settings', (val) => {
         this.course.letterGrades = val
       })

@@ -111,6 +111,9 @@ const getters = {
   },
   getTotalGPA(state, getters) {
     return (state.overallGpa * ((getters.getTotalCreditsAfterCurrentSemester - getters.getTotalCreditsForSemester) / getters.getTotalCreditsAfterCurrentSemester) + getters.getCurrentSemesterGPA * (getters.getTotalCreditsForSemester / getters.getTotalCreditsAfterCurrentSemester)).toFixed(2)
+  },
+  getCourseById: (state) => (courseId) => {
+    return state.courses.find(course => course.id === courseId)
   }
 }
 const mutations = {
