@@ -168,6 +168,14 @@ const mutations = {
   },
   updateOverallGPA(state, gpa) {
     state.overallGpa = gpa
+  },
+  addAssignment(state, courseId) {
+    const courseIndex = state.courses.findIndex(course => course.id === courseId)
+    state.courses[courseIndex].assignments.push({
+      name: '',
+      grade: '',
+      weight: ''
+    })
   }
 }
 const actions = {}

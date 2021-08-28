@@ -71,7 +71,7 @@
                     {{ weightedAverage() ? weightedAverage() + '%' : ''}}
                     {{ getLetterGrade(weightedAverage()) ? '(' + getLetterGrade(weightedAverage()) + ')' : 'Add an assignment to compute your grade'}}
                 </strong></h6>
-                <button class="button is-small is-primary" @click="add"><span><i class="fa fa-plus"></i> Add Assignment</span>
+                <button class="button is-small is-primary" @click="addAssignment(courseId)"><span><i class="fa fa-plus"></i> Add Assignment</span>
                 </button>
                 <button class="button is-small is-danger" @click="deleteCourse(course.id)"><span><i class="fa fa-times"> Remove this course</i></span>
                 </button>
@@ -160,7 +160,7 @@
       })
     },
     methods: {
-      ...mapMutations(['deleteCourse']),
+      ...mapMutations(['deleteCourse', 'addAssignment']),
       average() {
         let weight = 0
         this.course.assignments.forEach(assignment => {
@@ -192,13 +192,6 @@
           }
         }
         return (100 - result)
-      },
-      add() {
-        this.course.assignments.push({
-          name: '',
-          grade: '',
-          weight: ''
-        })
       },
       removeAssignment(index) {
         this.course.assignments.splice(index, 1)
