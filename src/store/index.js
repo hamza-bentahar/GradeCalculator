@@ -170,12 +170,17 @@ const mutations = {
     state.overallGpa = gpa
   },
   addAssignment(state, courseId) {
-    const courseIndex = state.courses.findIndex(course => course.id === courseId)
-    state.courses[courseIndex].assignments.push({
+    const courseIdx = state.courses.findIndex(course => course.id === courseId)
+    state.courses[courseIdx].assignments.push({
       name: '',
       grade: '',
       weight: ''
     })
+  },
+  removeAssignment(state, {courseId, assignmentIdx}) {
+    const courseIdx = state.courses.findIndex(course => course.id === courseId)
+    // eslint-disable-next-line no-console
+    state.courses[courseIdx].assignments.splice(assignmentIdx, 1)
   }
 }
 const actions = {}

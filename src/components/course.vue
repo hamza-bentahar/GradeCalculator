@@ -37,13 +37,13 @@
                     </tr>
                     </thead>
                     <tbody>
-                    <tr v-for="(assignment, index) in course.assignments" :key="index">
+                    <tr v-for="(assignment, assignmentIdx) in course.assignments" :key="assignmentIdx">
                         <td>
                             <div class="field">
                                 <div class="control has-icons-right">
                                     <input class="input is-small" type="email" placeholder="Name"
                                            v-model="assignment.name">
-                                    <span class="icon is-right" v-if="valid(index)"><i class="fa fa-check has-text-success"></i></span>
+                                    <span class="icon is-right" v-if="valid(assignmentIdx)"><i class="fa fa-check has-text-success"></i></span>
                                 </div>
                             </div>
                         </td>
@@ -62,7 +62,7 @@
                             </div>
                         </td>
                         <td>
-                            <i class="fa fa-minus-circle has-text-danger pointer" @click="removeAssignment(index)"></i>
+                            <i class="fa fa-minus-circle has-text-danger pointer" @click="removeAssignment({courseId, assignmentIdx})"></i>
                         </td>
                     </tr>
                     </tbody>
@@ -160,7 +160,7 @@
       })
     },
     methods: {
-      ...mapMutations(['deleteCourse', 'addAssignment']),
+      ...mapMutations(['deleteCourse', 'addAssignment', 'removeAssignment']),
       average() {
         let weight = 0
         this.course.assignments.forEach(assignment => {
@@ -192,10 +192,6 @@
           }
         }
         return (100 - result)
-      },
-      removeAssignment(index) {
-        this.course.assignments.splice(index, 1)
-        console.log(index)
       },
       closeModal() {
         this.showModal = false
