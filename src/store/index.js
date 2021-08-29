@@ -198,7 +198,11 @@ const mutations = {
   updateAssignmentGrade(state, {newGrade, courseId, assignmentIdx}) {
     const courseIdx = state.courses.findIndex(course => course.id === courseId)
     state.courses[courseIdx].assignments[assignmentIdx].grade = newGrade
-  }
+  },
+  updateAssignmentWeight(state, {newWeight, courseId, assignmentIdx}) {
+    const courseIdx = state.courses.findIndex(course => course.id === courseId)
+    state.courses[courseIdx].assignments[assignmentIdx].weight = newWeight
+  },
 }
 const actions = {}
 

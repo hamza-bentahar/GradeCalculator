@@ -65,7 +65,11 @@
                         <td>
                             <div class="field">
                                 <div class="control">
-                                    <input class="input is-small" type="number" v-model.number="assignment.weight" min="0">
+                                    <input class="input is-small"
+                                           type="number"
+                                           min="0"
+                                           :value="assignment.weight"
+                                           @input="inputAssignmentWeight($event, assignmentIdx)">
                                 </div>
                             </div>
                         </td>
@@ -168,7 +172,8 @@
       })
     },
     methods: {
-      ...mapMutations(['deleteCourse', 'addAssignment', 'removeAssignment', 'updateAssignmentName', 'updateAssignmentGrade']),
+      ...mapMutations(['deleteCourse', 'addAssignment', 'removeAssignment', 'updateAssignmentName',
+                      'updateAssignmentGrade', 'updateAssignmentWeight']),
       inputAssignmentName(event, assignmentIdx) {
         this.updateAssignmentName({
           newName: event.target.value,
@@ -179,6 +184,13 @@
       inputAssignmentGrade(event, assigmentIdx) {
         this.updateAssignmentGrade({
           newGrade: Number(event.target.value),
+          courseId: this.courseId,
+          assignmentIdx: assigmentIdx
+        })
+      },
+      inputAssignmentWeight(event, assigmentIdx) {
+        this.updateAssignmentWeight({
+          newWeight: Number(event.target.value),
           courseId: this.courseId,
           assignmentIdx: assigmentIdx
         })
