@@ -140,6 +140,31 @@ const getters = {
       })
     }
     return result
+  },
+  getRemainingWeight: (state, getters) => (courseId) => {
+    let result = 0
+    const course = getters.getCourseById(courseId)
+    for (let assignment in course.assignments) {
+      let info = course.assignments[assignment]
+      if (info.grade !== '' && info.weight !== '') {
+        result += parseFloat(info.weight)
+      }
+    }
+    return (100 - result)
+  },
+  getWeightedAverage: (state, getters) => (courseId) => {
+    let total = 0
+    let cnt = 0
+    const course = getters.getCourseById(courseId)
+    course.assignments.forEach(assignment => {
+      if (assignment.grade !== '' && assignment.weight !== '') {
+        cnt ++
+        total += parseFloat(assignment.grade) * (parseFloat(assignment.weight) / (100 - getters.getRemainingWeight(courseId)))
+      }
+    })
+    const courseIdx = state.courses.findIndex(course => course.id === courseId)
+    state.courses[courseIdx].grade = getters.getCourseLetterGrade(courseId, total)
+    return cnt ? total.toFixed(2) : null
   }
 }
 const mutations = {

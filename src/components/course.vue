@@ -80,8 +80,8 @@
                     </tbody>
                 </table>
                 <h6>Your average grade : <strong>
-                    {{ weightedAverage() ? weightedAverage() + '%' : ''}}
-                    {{ getCourseLetterGrade(courseId, weightedAverage()) ? '(' + getCourseLetterGrade(courseId, weightedAverage()) + ')' : 'Add an assignment to compute your grade'}}
+                    {{ getWeightedAverage(courseId) ? getWeightedAverage(courseId) + '%' : ''}}
+                    {{ getCourseLetterGrade(courseId, getWeightedAverage(courseId)) ? '(' + getCourseLetterGrade(courseId, getWeightedAverage(courseId)) + ')' : 'Add an assignment to compute your grade'}}
                 </strong></h6>
                 <button class="button is-small is-primary" @click="addAssignment(courseId)"><span><i class="fa fa-plus"></i> Add Assignment</span>
                 </button>
@@ -152,15 +152,15 @@
       }
     },
     computed: {
-      ...mapGetters(['getCourseById', 'getCourseLetterGrade']),
+      ...mapGetters(['getCourseById', 'getCourseLetterGrade', 'getWeightedAverage', 'getRemainingWeight']),
       course() {
         return this.getCourseById(this.courseId)
       },
       finalGrade() {
-        return (((parseFloat(this.prediction) * this.remainingWeight()) / 100) + this.getCourseAverage(this.courseId)).toFixed(2)
+        return (((parseFloat(this.prediction) * this.getRemainingWeight(this.courseId)) / 100) + this.getCourseAverage(this.courseId)).toFixed(2)
       },
       remainingAssignments() {
-        return (((this.remaining - this.getCourseAverage(this.courseId)) * 100) / this.remainingWeight()).toFixed(2)
+        return (((this.remaining - this.getCourseAverage(this.courseId)) * 100) / this.getRemainingWeight(this.courseId)).toFixed(2)
       }
     },
     mounted() {
@@ -194,29 +194,6 @@
           courseId: this.courseId,
           assignmentIdx: assigmentIdx
         })
-      },
-      weightedAverage() {
-        let total = 0
-        let cnt = 0
-        this.course.assignments.forEach(assignment => {
-          if (assignment.grade !== '' && assignment.weight !== '') {
-            cnt ++
-            total += parseFloat(assignment.grade) * (parseFloat(assignment.weight) / (100 - this.remainingWeight()))
-          }
-        })
-        this.course.grade = this.getCourseLetterGrade(this.courseId, total)
-        Event.$emit('new-input', this.course)
-        return cnt ? total.toFixed(2) : null
-      },
-      remainingWeight() {
-        let result = 0
-        for (let assignment in this.course.assignments) {
-          let info = this.course.assignments[assignment]
-          if (info.grade !== '' && info.weight !== '') {
-            result += parseFloat(info.weight)
-          }
-        }
-        return (100 - result)
       },
       closeModal() {
         this.showModal = false
