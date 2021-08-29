@@ -41,9 +41,14 @@
                         <td>
                             <div class="field">
                                 <div class="control has-icons-right">
-                                    <input class="input is-small" type="email" placeholder="Name"
-                                           v-model="assignment.name">
-                                    <span class="icon is-right" v-if="valid(assignmentIdx)"><i class="fa fa-check has-text-success"></i></span>
+                                    <input class="input is-small"
+                                           type="email"
+                                           placeholder="Name"
+                                           :value="assignment.name"
+                                           @input="inputAssignmentName($event, assignmentIdx)">
+                                    <span class="icon is-right" v-if="valid(assignmentIdx)">
+                                      <i class="fa fa-check has-text-success"></i>
+                                    </span>
                                 </div>
                             </div>
                         </td>
@@ -145,10 +150,10 @@
         return this.getCourseById(this.courseId)
       },
       finalGrade() {
-        return (((parseFloat(this.prediction) * this.remainingWeight()) / 100) + this.average()).toFixed(2)
+        return (((parseFloat(this.prediction) * this.remainingWeight()) / 100) + this.getCourseAverage(this.courseId)).toFixed(2)
       },
       remainingAssignments() {
-        return (((this.remaining - this.average()) * 100) / this.remainingWeight()).toFixed(2)
+        return (((this.remaining - this.getCourseAverage(this.courseId)) * 100) / this.remainingWeight()).toFixed(2)
       }
     },
     mounted() {
@@ -160,15 +165,13 @@
       })
     },
     methods: {
-      ...mapMutations(['deleteCourse', 'addAssignment', 'removeAssignment']),
-      average() {
-        let weight = 0
-        this.course.assignments.forEach(assignment => {
-          if (assignment.grade !== '' && assignment.weight !== '') {
-            weight += parseFloat(assignment.grade) * (parseFloat(assignment.weight) / 100)
-          }
+      ...mapMutations(['deleteCourse', 'addAssignment', 'removeAssignment', 'updateAssignmentName']),
+      inputAssignmentName(event, assignmentIdx) {
+        this.updateAssignmentName({
+          newName: event.target.value,
+          courseId: this.courseId,
+          assignmentIdx: assignmentIdx
         })
-        return weight
       },
       weightedAverage() {
         let total = 0

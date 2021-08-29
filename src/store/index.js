@@ -114,6 +114,16 @@ const getters = {
   },
   getCourseById: (state) => (courseId) => {
     return state.courses.find(course => course.id === courseId)
+  },
+  getCourseAverage: (state, getters) => (courseId) => {
+    const course = getters.getCourseById(courseId)
+    let weight = 0
+    course.assignments.forEach(assignment => {
+      if (assignment.grade !== '' && assignment.weight !== '') {
+        weight += parseFloat(assignment.grade) * (parseFloat(assignment.weight) / 100)
+      }
+    })
+    return weight
   }
 }
 const mutations = {
@@ -179,8 +189,11 @@ const mutations = {
   },
   removeAssignment(state, {courseId, assignmentIdx}) {
     const courseIdx = state.courses.findIndex(course => course.id === courseId)
-    // eslint-disable-next-line no-console
     state.courses[courseIdx].assignments.splice(assignmentIdx, 1)
+  },
+  updateAssignmentName(state, {newName, courseId, assignmentIdx}) {
+    const courseIdx = state.courses.findIndex(course => course.id === courseId)
+    state.courses[courseIdx].assignments[assignmentIdx].name = newName
   }
 }
 const actions = {}
