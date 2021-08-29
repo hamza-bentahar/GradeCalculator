@@ -124,6 +124,22 @@ const getters = {
       }
     })
     return weight
+  },
+  getCourseLetterGrade: (state, getters) => (courseId, grade) => {
+    const course = getters.getCourseById(courseId)
+    let result = ''
+    if (grade) {
+      course.letterGrades.forEach(function (element) {
+        if (!element.max && grade >= element.min) {
+          result = element.letter
+        } else if ((grade >= element.min) && (grade < element.max)) {
+          result = element.letter
+        } else if (!element.min && grade < element.max) {
+          result = element.letter
+        }
+      })
+    }
+    return result
   }
 }
 const mutations = {
@@ -163,7 +179,7 @@ const mutations = {
           weight: ''
         }
       ],
-      letterGrades: this.letterGrades
+      letterGrades: state.letterGrades
     }
     state.courses.push(course)
   },

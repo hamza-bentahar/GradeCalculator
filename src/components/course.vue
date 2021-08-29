@@ -81,7 +81,7 @@
                 </table>
                 <h6>Your average grade : <strong>
                     {{ weightedAverage() ? weightedAverage() + '%' : ''}}
-                    {{ getLetterGrade(weightedAverage()) ? '(' + getLetterGrade(weightedAverage()) + ')' : 'Add an assignment to compute your grade'}}
+                    {{ getCourseLetterGrade(courseId, weightedAverage()) ? '(' + getCourseLetterGrade(courseId, weightedAverage()) + ')' : 'Add an assignment to compute your grade'}}
                 </strong></h6>
                 <button class="button is-small is-primary" @click="addAssignment(courseId)"><span><i class="fa fa-plus"></i> Add Assignment</span>
                 </button>
@@ -97,7 +97,7 @@
                             </div>
                         </div>
                         <p v-if="remaining">
-                            To end up with a grade of {{ remaining }}% ({{ getLetterGrade(remaining)}}), you will need
+                            To end up with a grade of {{ remaining }}% ({{ getCourseLetterGrade(courseId, remaining)}}), you will need
                             <strong>{{ remainingAssignments
                                 }}%</strong> on the
                             remaining assignments.
@@ -112,7 +112,7 @@
                         </div>
                         <p v-if="prediction">
                             Your final grade is going to be <strong>{{ finalGrade }} ({{
-                            getLetterGrade(finalGrade)}})</strong> if you get {{ prediction }}%
+                            getCourseLetterGrade(courseId, finalGrade)}})</strong> if you get {{ prediction }}%
                             on
                             the remaining assignments
                         </p>
@@ -152,7 +152,7 @@
       }
     },
     computed: {
-      ...mapGetters(['getCourseById']),
+      ...mapGetters(['getCourseById', 'getCourseLetterGrade']),
       course() {
         return this.getCourseById(this.courseId)
       },
@@ -204,7 +204,7 @@
             total += parseFloat(assignment.grade) * (parseFloat(assignment.weight) / (100 - this.remainingWeight()))
           }
         })
-        this.course.grade = this.getLetterGrade(total)
+        this.course.grade = this.getCourseLetterGrade(this.courseId, total)
         Event.$emit('new-input', this.course)
         return cnt ? total.toFixed(2) : null
       },
@@ -223,21 +223,6 @@
       },
       newInput() {
         Event.$emit('new-input', this.course)
-      },
-      getLetterGrade(grade) {
-        let result = ''
-        if (grade) {
-          this.course.letterGrades.forEach(function (element) {
-            if (!element.max && grade >= element.min) {
-              result = element.letter
-            } else if ((grade >= element.min) && (grade < element.max)) {
-              result = element.letter
-            } else if (!element.min && grade < element.max) {
-              result = element.letter
-            }
-          })
-        }
-        return result
       },
       valid(index) {
         // console.log(this.course.assignments[index].grade && this.course.assignments[index].weight)
