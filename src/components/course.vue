@@ -27,34 +27,17 @@
                         </div>
                     </div>
                 </div>
-                <table class="table is-narrow">
-                    <thead>
-                    <tr>
-                        <th>Assignment</th>
-                        <th>Grade (%)</th>
-                        <th>Weight (%)</th>
-                        <th></th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    <assignment
-                        :course-id="courseId"
-                        :assignment-idx="assignmentIdx"
-                        v-for="(assignment, assignmentIdx) in course.assignments"
-                        :key="assignmentIdx">
-                    </assignment>
-                    </tbody>
-                </table>
-                <h6>Your average grade : <strong>
-                    {{ getWeightedAverage(courseId) ? getWeightedAverage(courseId) + '%' : ''}}
-                    {{ getCourseLetterGrade(courseId, getWeightedAverage(courseId)) ? '(' + getCourseLetterGrade(courseId, getWeightedAverage(courseId)) + ')' : 'Add an assignment to compute your grade'}}
-                </strong></h6>
-                <button class="button is-small is-primary" @click="addAssignment(courseId)">
-                  <span><i class="fa fa-plus"></i> Add Assignment</span>
-                </button>
-                <button class="button is-small is-danger" @click="deleteCourse(course.id)">
-                  <span><i class="fa fa-times"> Remove this course</i></span>
-                </button>
+                <assignments :course-id="courseId"></assignments>
+              <h6>Your average grade : <strong>
+                {{ getWeightedAverage(courseId) ? getWeightedAverage(courseId) + '%' : ''}}
+                {{ getCourseLetterGrade(courseId, getWeightedAverage(courseId)) ? '(' + getCourseLetterGrade(courseId, getWeightedAverage(courseId)) + ')' : 'Add an assignment to compute your grade'}}
+              </strong></h6>
+              <button class="button is-small is-primary" @click="addAssignment(courseId)">
+                <span><i class="fa fa-plus"></i> Add Assignment</span>
+              </button>
+              <button class="button is-small is-danger" @click="deleteCourse(course.id)">
+                <span><i class="fa fa-times"> Remove this course</i></span>
+              </button>
                 <hr>
                 <div class="columns">
                     <div class="column">
@@ -95,7 +78,7 @@
   /* eslint-disable */
   import modal from './modal'
   import courseSettings from "./courseSettings"
-  import assignment from "./assignment"
+  import assignments from "./assignments"
   import {mapMutations, mapGetters} from 'vuex'
 
   export default {
@@ -103,7 +86,7 @@
     components: {
       modal,
       courseSettings,
-      assignment
+      assignments
     },
     props: {
       letterGrades: {
@@ -122,8 +105,8 @@
       }
     },
     computed: {
-      ...mapGetters(['getCourseById', 'getCourseLetterGrade', 'getWeightedAverage', 'getRemainingWeight',
-        'getAssigmentCheck', 'getGradeNeededOnRemainingAssignment', 'getFinalGrade']),
+      ...mapGetters(['getCourseById', 'getCourseLetterGrade', 'getWeightedAverage',
+        'getGradeNeededOnRemainingAssignment', 'getFinalGrade']),
       course() {
         return this.getCourseById(this.courseId)
       }
@@ -137,8 +120,7 @@
       })
     },
     methods: {
-      ...mapMutations(['deleteCourse', 'addAssignment', 'removeAssignment', 'updateAssignmentName',
-                      'updateAssignmentGrade', 'updateAssignmentWeight']),
+      ...mapMutations(['deleteCourse', 'addAssignment', 'removeAssignment']),
       closeModal() {
         this.showModal = false
       },
