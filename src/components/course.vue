@@ -107,14 +107,14 @@
                         <div class="field">
                             <div class="control">
                                 <label>Prediction on the future assignments</label>
-                                <input class="input" type="number" placeholder="Grade (%)" v-model="prediction">
+                                <input class="input" type="number" placeholder="Grade (%)" v-model="expectedFinalGrade">
                             </div>
                         </div>
-                        <p v-if="prediction">
-                            Your final grade is going to be <strong>{{ finalGrade }} ({{
-                            getCourseLetterGrade(courseId, finalGrade)}})</strong> if you get {{ prediction }}%
-                            on
-                            the remaining assignments
+                        <p v-if="expectedFinalGrade">
+                          Your final grade is going to be
+                          <strong>{{ getFinalGrade(courseId, expectedFinalGrade) }}
+                            ({{ getCourseLetterGrade(courseId, getFinalGrade(courseId, expectedFinalGrade))}})</strong>
+                          if you get {{ expectedFinalGrade }}% on the remaining assignments
                         </p>
                     </div>
                 </div>
@@ -146,19 +146,16 @@
     },
     data() {
       return {
-        prediction: null,
+        expectedFinalGrade: null,
         desiredGrade: null,
         showModal: false
       }
     },
     computed: {
       ...mapGetters(['getCourseById', 'getCourseLetterGrade', 'getWeightedAverage', 'getRemainingWeight',
-        'getAssigmentCheck', 'getGradeNeededOnRemainingAssignment']),
+        'getAssigmentCheck', 'getGradeNeededOnRemainingAssignment', 'getFinalGrade']),
       course() {
         return this.getCourseById(this.courseId)
-      },
-      finalGrade() {
-        return (((parseFloat(this.prediction) * this.getRemainingWeight(this.courseId)) / 100) + this.getCourseAverage(this.courseId)).toFixed(2)
       }
     },
     mounted() {

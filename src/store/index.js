@@ -173,6 +173,9 @@ const getters = {
   getGradeNeededOnRemainingAssignment: (state, getters) => (courseId, desiredGrade) => {
     // TODO: fix issue when remaining weight is 0
     return (((desiredGrade - getters.getCourseAverage(courseId)) * 100) / getters.getRemainingWeight(courseId)).toFixed(2)
+  },
+  getFinalGrade: (state, getters) => (courseId, expectedFinalGrade) => {
+    return (((parseFloat(expectedFinalGrade) * getters.getRemainingWeight(courseId)) / 100) + getters.getCourseAverage(courseId)).toFixed(2)
   }
 }
 const mutations = {
