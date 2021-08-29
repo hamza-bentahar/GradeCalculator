@@ -37,55 +37,23 @@
                     </tr>
                     </thead>
                     <tbody>
-                    <tr v-for="(assignment, assignmentIdx) in course.assignments" :key="assignmentIdx">
-                        <td>
-                            <div class="field">
-                                <div class="control has-icons-right">
-                                    <input class="input is-small"
-                                           type="email"
-                                           placeholder="Name"
-                                           :value="assignment.name"
-                                           @input="inputAssignmentName($event, assignmentIdx)">
-                                    <span class="icon is-right" v-if="getAssigmentCheck(courseId, assignmentIdx)">
-                                      <i class="fa fa-check has-text-success"></i>
-                                    </span>
-                                </div>
-                            </div>
-                        </td>
-                        <td>
-                            <div class="field">
-                                <div class="control">
-                                    <input class="input is-small"
-                                           type="number"
-                                           :value="assignment.grade"
-                                           @input="inputAssignmentGrade($event, assignmentIdx)">
-                                </div>
-                            </div>
-                        </td>
-                        <td>
-                            <div class="field">
-                                <div class="control">
-                                    <input class="input is-small"
-                                           type="number"
-                                           min="0"
-                                           :value="assignment.weight"
-                                           @input="inputAssignmentWeight($event, assignmentIdx)">
-                                </div>
-                            </div>
-                        </td>
-                        <td>
-                            <i class="fa fa-minus-circle has-text-danger pointer" @click="removeAssignment({courseId, assignmentIdx})"></i>
-                        </td>
-                    </tr>
+                    <assignment
+                        :course-id="courseId"
+                        :assignment-idx="assignmentIdx"
+                        v-for="(assignment, assignmentIdx) in course.assignments"
+                        :key="assignmentIdx">
+                    </assignment>
                     </tbody>
                 </table>
                 <h6>Your average grade : <strong>
                     {{ getWeightedAverage(courseId) ? getWeightedAverage(courseId) + '%' : ''}}
                     {{ getCourseLetterGrade(courseId, getWeightedAverage(courseId)) ? '(' + getCourseLetterGrade(courseId, getWeightedAverage(courseId)) + ')' : 'Add an assignment to compute your grade'}}
                 </strong></h6>
-                <button class="button is-small is-primary" @click="addAssignment(courseId)"><span><i class="fa fa-plus"></i> Add Assignment</span>
+                <button class="button is-small is-primary" @click="addAssignment(courseId)">
+                  <span><i class="fa fa-plus"></i> Add Assignment</span>
                 </button>
-                <button class="button is-small is-danger" @click="deleteCourse(course.id)"><span><i class="fa fa-times"> Remove this course</i></span>
+                <button class="button is-small is-danger" @click="deleteCourse(course.id)">
+                  <span><i class="fa fa-times"> Remove this course</i></span>
                 </button>
                 <hr>
                 <div class="columns">
@@ -127,13 +95,15 @@
   /* eslint-disable */
   import modal from './modal'
   import courseSettings from "./courseSettings"
+  import assignment from "./assignment"
   import {mapMutations, mapGetters} from 'vuex'
 
   export default {
     name: "course",
     components: {
       modal,
-      courseSettings
+      courseSettings,
+      assignment
     },
     props: {
       letterGrades: {
@@ -169,27 +139,6 @@
     methods: {
       ...mapMutations(['deleteCourse', 'addAssignment', 'removeAssignment', 'updateAssignmentName',
                       'updateAssignmentGrade', 'updateAssignmentWeight']),
-      inputAssignmentName(event, assignmentIdx) {
-        this.updateAssignmentName({
-          newName: event.target.value,
-          courseId: this.courseId,
-          assignmentIdx: assignmentIdx
-        })
-      },
-      inputAssignmentGrade(event, assigmentIdx) {
-        this.updateAssignmentGrade({
-          newGrade: Number(event.target.value),
-          courseId: this.courseId,
-          assignmentIdx: assigmentIdx
-        })
-      },
-      inputAssignmentWeight(event, assigmentIdx) {
-        this.updateAssignmentWeight({
-          newWeight: Number(event.target.value),
-          courseId: this.courseId,
-          assignmentIdx: assigmentIdx
-        })
-      },
       closeModal() {
         this.showModal = false
       },

@@ -176,6 +176,10 @@ const getters = {
   },
   getFinalGrade: (state, getters) => (courseId, expectedFinalGrade) => {
     return (((parseFloat(expectedFinalGrade) * getters.getRemainingWeight(courseId)) / 100) + getters.getCourseAverage(courseId)).toFixed(2)
+  },
+  getAssignmentByIdx: (state, getters) => (courseId, assignmentIdx) => {
+    const course = getters.getCourseById(courseId)
+    return course.assignments[assignmentIdx]
   }
 }
 const mutations = {
