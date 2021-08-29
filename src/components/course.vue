@@ -46,7 +46,7 @@
                                            placeholder="Name"
                                            :value="assignment.name"
                                            @input="inputAssignmentName($event, assignmentIdx)">
-                                    <span class="icon is-right" v-if="valid(assignmentIdx)">
+                                    <span class="icon is-right" v-if="getAssigmentCheck(courseId, assignmentIdx)">
                                       <i class="fa fa-check has-text-success"></i>
                                     </span>
                                 </div>
@@ -93,14 +93,14 @@
                         <div class="field">
                             <div class="control">
                                 <label>What is your desired grade?</label>
-                                <input class="input" type="number" placeholder="Grade (%)" v-model="remaining">
+                                <input class="input" type="number" placeholder="Grade (%)" v-model.number="desiredGrade">
                             </div>
                         </div>
-                        <p v-if="remaining">
-                            To end up with a grade of {{ remaining }}% ({{ getCourseLetterGrade(courseId, remaining)}}), you will need
-                            <strong>{{ remainingAssignments
-                                }}%</strong> on the
-                            remaining assignments.
+                        <p v-if="desiredGrade">
+                          To end up with a grade of {{ desiredGrade }}%
+                          ({{ getCourseLetterGrade(courseId, desiredGrade) }}), you will need
+                          <strong>{{ getGradeNeededOnRemainingAssignment(courseId, desiredGrade) }}%</strong>
+                          on the remaining assignments.
                         </p>
                     </div>
                     <div class="column">
@@ -147,20 +147,18 @@
     data() {
       return {
         prediction: null,
-        remaining: null,
+        desiredGrade: null,
         showModal: false
       }
     },
     computed: {
-      ...mapGetters(['getCourseById', 'getCourseLetterGrade', 'getWeightedAverage', 'getRemainingWeight']),
+      ...mapGetters(['getCourseById', 'getCourseLetterGrade', 'getWeightedAverage', 'getRemainingWeight',
+        'getAssigmentCheck', 'getGradeNeededOnRemainingAssignment']),
       course() {
         return this.getCourseById(this.courseId)
       },
       finalGrade() {
         return (((parseFloat(this.prediction) * this.getRemainingWeight(this.courseId)) / 100) + this.getCourseAverage(this.courseId)).toFixed(2)
-      },
-      remainingAssignments() {
-        return (((this.remaining - this.getCourseAverage(this.courseId)) * 100) / this.getRemainingWeight(this.courseId)).toFixed(2)
       }
     },
     mounted() {
@@ -200,10 +198,6 @@
       },
       newInput() {
         Event.$emit('new-input', this.course)
-      },
-      valid(index) {
-        // console.log(this.course.assignments[index].grade && this.course.assignments[index].weight)
-        return this.course.assignments[index].grade && this.course.assignments[index].weight
       }
     }
   }

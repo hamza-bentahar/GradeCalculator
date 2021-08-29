@@ -165,6 +165,14 @@ const getters = {
     const courseIdx = state.courses.findIndex(course => course.id === courseId)
     state.courses[courseIdx].grade = getters.getCourseLetterGrade(courseId, total)
     return cnt ? total.toFixed(2) : null
+  },
+  getAssigmentCheck: (state, getters) => (courseId, assigmentIdx) => {
+    const course = getters.getCourseById(courseId)
+    return course.assignments[assigmentIdx].grade && course.assignments[assigmentIdx].weight
+  },
+  getGradeNeededOnRemainingAssignment: (state, getters) => (courseId, desiredGrade) => {
+    // TODO: fix issue when remaining weight is 0
+    return (((desiredGrade - getters.getCourseAverage(courseId)) * 100) / getters.getRemainingWeight(courseId)).toFixed(2)
   }
 }
 const mutations = {
