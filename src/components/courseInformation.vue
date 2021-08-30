@@ -18,7 +18,8 @@
           <input type="number"
                  class="input"
                  placeholder="Credits"
-                 v-model.number="course.credits"
+                 :value="course.credits"
+                 @input="inputCourseCredits"
                  min="0"
                  max="7"
                  step="1">
@@ -69,10 +70,16 @@ export default {
     }
   },
   methods: {
-    ...mapMutations(['updateCourseName']),
+    ...mapMutations(['updateCourseName', 'updateCourseCredits']),
     inputCourseName(event) {
       this.updateCourseName({
         newName: event.target.value,
+        courseId: this.courseId
+      })
+    },
+    inputCourseCredits(event) {
+      this.updateCourseCredits({
+        credits: Number(event.target.value),
         courseId: this.courseId
       })
     },

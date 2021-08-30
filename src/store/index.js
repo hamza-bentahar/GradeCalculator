@@ -262,6 +262,10 @@ const mutations = {
   updateCourseName(state, {newName, courseId}) {
     const courseIdx = state.courses.findIndex(course => course.id === courseId)
     state.courses[courseIdx].name = newName
+  },
+  updateCourseCredits(state, {credits, courseId}) {
+    const courseIdx = state.courses.findIndex(course => course.id === courseId)
+    state.courses[courseIdx].credits = credits
   }
 }
 const actions = {}

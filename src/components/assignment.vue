@@ -9,8 +9,8 @@
                  :value="assignment.name"
                  @input="inputAssignmentName($event, assignmentIdx)">
           <span class="icon is-right" v-if="getAssigmentCheck(courseId, assignmentIdx)">
-                                      <i class="fa fa-check has-text-success"></i>
-                                    </span>
+            <i class="fa fa-check has-text-success"></i>
+          </span>
         </div>
       </div>
     </td>
