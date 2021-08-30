@@ -6,13 +6,22 @@
     <div class="column is-8">
       <div class="field">
         <div class="control">
-          <input class="input" type="text" placeholder="Course Name" v-model="course.name">
+          <input class="input"
+                 type="text"
+                 placeholder="Course Name"
+                 :value="course.name"
+                 @input="inputCourseName">
         </div>
       </div>
       <div class="field">
         <div class="control">
-          <input type="number" class="input" placeholder="Credits" v-model.number="course.credits"
-                 min="0" max="7" step="1">
+          <input type="number"
+                 class="input"
+                 placeholder="Credits"
+                 v-model.number="course.credits"
+                 min="0"
+                 max="7"
+                 step="1">
         </div>
       </div>
     </div>
@@ -29,7 +38,7 @@
 <script>
 import modal from './modal'
 import courseSettings from "./courseSettings"
-import {mapGetters} from "vuex";
+import {mapGetters, mapMutations} from "vuex";
 
 export default {
   name: "courseInformation",
@@ -60,6 +69,13 @@ export default {
     }
   },
   methods: {
+    ...mapMutations(['updateCourseName']),
+    inputCourseName(event) {
+      this.updateCourseName({
+        newName: event.target.value,
+        courseId: this.courseId
+      })
+    },
     closeModal() {
       this.showModal = false
     }
