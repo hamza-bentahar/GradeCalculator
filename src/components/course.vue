@@ -4,7 +4,7 @@
           <course-settings :course-name="course.name" :letter-grades="letterGrades" :course="course"></course-settings>
         </modal>
         <div class="tile is-child box">
-            <div v-if="course" @input="newInput">
+            <div v-if="course">
                 <div class="columns">
                     <div class="column is-8">
                         <div class="field">
@@ -123,16 +123,7 @@
       ...mapMutations(['deleteCourse', 'addAssignment', 'removeAssignment']),
       closeModal() {
         this.showModal = false
-      },
-      newInput() {
-        Event.$emit('new-input', this.course)
       }
     }
   }
 </script>
-
-<style scoped>
-    .pointer:hover {
-        cursor: pointer;
-    }
-</style>
