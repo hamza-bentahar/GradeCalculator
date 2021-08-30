@@ -1,32 +1,8 @@
 <template>
     <div class="tile is-parent">
-        <modal v-show="showModal" @close="closeModal">
-          <course-settings :course-name="course.name" :letter-grades="letterGrades" :course="course"></course-settings>
-        </modal>
         <div class="tile is-child box">
             <div v-if="course">
-                <div class="columns">
-                    <div class="column is-8">
-                        <div class="field">
-                            <div class="control">
-                                <input class="input" type="text" placeholder="Course Name" v-model="course.name">
-                            </div>
-                        </div>
-                        <div class="field">
-                            <div class="control">
-                                <input type="number" class="input" placeholder="Credits" v-model.number="course.credits"
-                                       min="0" max="7" step="1">
-                            </div>
-                        </div>
-                    </div>
-                    <div class="column">
-                        <div class="field">
-                            <button class="button" @click="showModal = true">
-                              <span><i class="fa fa-cog"></i> Settings</span>
-                            </button>
-                        </div>
-                    </div>
-                </div>
+                <course-information :course-id="courseId"></course-information>
                 <assignments :course-id="courseId"></assignments>
               <h6>Your average grade : <strong>
                 {{ getWeightedAverage(courseId) ? getWeightedAverage(courseId) + '%' : ''}}
@@ -76,17 +52,15 @@
 
 <script>
   /* eslint-disable */
-  import modal from './modal'
-  import courseSettings from "./courseSettings"
   import assignments from "./assignments"
+  import courseInformation from "./courseInformation"
   import {mapMutations, mapGetters} from 'vuex'
 
   export default {
     name: "course",
     components: {
-      modal,
-      courseSettings,
-      assignments
+      assignments,
+      courseInformation
     },
     props: {
       letterGrades: {
@@ -100,8 +74,7 @@
     data() {
       return {
         expectedFinalGrade: null,
-        desiredGrade: null,
-        showModal: false
+        desiredGrade: null
       }
     },
     computed: {
@@ -115,15 +88,9 @@
       Event.$on('updated-course-settings', (val) => {
         this.course.letterGrades = val
       })
-      Event.$on('close-settings-modal', () => {
-        this.closeModal()
-      })
     },
     methods: {
-      ...mapMutations(['deleteCourse', 'addAssignment', 'removeAssignment']),
-      closeModal() {
-        this.showModal = false
-      }
+      ...mapMutations(['deleteCourse', 'addAssignment', 'removeAssignment'])
     }
   }
 </script>
