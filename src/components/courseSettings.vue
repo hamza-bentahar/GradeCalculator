@@ -2,14 +2,14 @@
   <div class="card">
     <header class="card-header">
       <p class="card-header-title">
-        Change Letter Grades for {{ courseName }}
+        Change Letter Grades for {{ course.name }}
       </p>
     </header>
     <div class="card-content">
       <div class="content">
         <div class="notification is-primary">
           <p>
-            Here you can you change the official grades of the course <strong>{{ courseName }}</strong>,
+            Here you can you change the official grades of the course <strong>{{ course.name }}</strong>,
             by changing the mark range for each letter grade.
           </p>
         </div>
@@ -41,6 +41,8 @@
 </template>
 
 <script>
+import {mapGetters, mapMutations} from "vuex";
+
 export default {
   name: "courseSettings",
   data() {
@@ -49,26 +51,27 @@ export default {
     }
   },
   props: {
-    courseName: {
-      type: String,
+    courseId: {
+      type: Number,
       required: true
-    },
-    letterGrades: {
-      type: Array,
-      default: () => []
-    },
-    course: {
-      type: Object
     }
   },
   mounted() {
-    this.userLetterGrades = this.letterGrades
+    this.userLetterGrades = this.course.letterGrades
+  },
+  computed: {
+    ...mapGetters(['getCourseById']),
+    course() {
+      return this.getCourseById(this.courseId)
+    }
   },
   methods: {
+    ...mapMutations(['updateLetterGrades']),
     save(close = true) {
-      Event.$emit('updated-course-settings', this.userLetterGrades)
-      Event.$emit('close-settings-modal')
-      Event.$emit('new-input', this.course)
+      this.updateLetterGrades({
+        letterGrades: this.userLetterGrades,
+        courseId: this.courseId
+      })
       this.$toasted.show('Settings saved', {
         theme: "toasted-primary",
         position: "top-right",

@@ -1,7 +1,7 @@
 <template>
   <div class="columns">
     <modal v-show="showModal" @close="closeModal">
-      <course-settings :course-name="course.name" :letter-grades="course.letterGrades" :course="course"></course-settings>
+      <course-settings :course-id="courseId"></course-settings>
     </modal>
     <div class="column is-8">
       <div class="field">
