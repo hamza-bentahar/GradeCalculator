@@ -1,19 +1,14 @@
 <template>
     <div class="tile is-parent">
         <div class="tile is-child box">
-            <div v-if="course">
-                <course-information :course-id="courseId"></course-information>
-                <assignments :course-id="courseId"></assignments>
+          <div v-if="course">
+            <course-information :course-id="courseId"></course-information>
+              <assignments :course-id="courseId"></assignments>
+              <course-controls :course-id="courseId"></course-controls>
               <h6>Your average grade : <strong>
                 {{ getWeightedAverage(courseId) ? getWeightedAverage(courseId) + '%' : ''}}
                 {{ getCourseLetterGrade(courseId, getWeightedAverage(courseId)) ? '(' + getCourseLetterGrade(courseId, getWeightedAverage(courseId)) + ')' : 'Add an assignment to compute your grade'}}
               </strong></h6>
-              <button class="button is-small is-primary" @click="addAssignment(courseId)">
-                <span><i class="fa fa-plus"></i> Add Assignment</span>
-              </button>
-              <button class="button is-small is-danger" @click="deleteCourse(course.id)">
-                <span><i class="fa fa-times"> Remove this course</i></span>
-              </button>
                 <hr>
                 <div class="columns">
                     <div class="column">
@@ -51,16 +46,17 @@
 </template>
 
 <script>
-  /* eslint-disable */
   import assignments from "./assignments"
   import courseInformation from "./courseInformation"
-  import {mapMutations, mapGetters} from 'vuex'
+  import courseControls from "./courseControls"
+  import {mapGetters} from 'vuex'
 
   export default {
     name: "course",
     components: {
       assignments,
-      courseInformation
+      courseInformation,
+      courseControls
     },
     props: {
       letterGrades: {
@@ -88,9 +84,6 @@
       Event.$on('updated-course-settings', (val) => {
         this.course.letterGrades = val
       })
-    },
-    methods: {
-      ...mapMutations(['deleteCourse', 'addAssignment', 'removeAssignment'])
     }
   }
 </script>
