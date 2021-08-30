@@ -80,14 +80,14 @@ export default {
       if (close) Event.$emit('close-settings-modal')
     },
     reset() {
-      this.userLetterGrades = this.letterGrades
-      Event.$emit('new-input', this.course)
-      this.$toasted.show('Settings reset and saved', {
+      // TODO: this function should reset to original state
+      this.userLetterGrades = this.course.letterGrades
+      this.$toasted.show('Settings reset', {
         theme: "toasted-primary",
         position: "top-right",
         duration : 3000
       })
-      this.save(false)
+      // if (close) Event.$emit('close-settings-modal')
     },
   }
 }
