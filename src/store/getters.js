@@ -12,15 +12,19 @@ const getters = {
     return getters.getTotalCreditsForSemester + state.earnedCredits
   },
   getCurrentSemesterGPA(state, getters) {
-    let total = 0
+    let creditsByGPA = undefined
     state.courses.forEach(course => {
-      // TODO: find letter grade specific to the course
-      let result = state.letterGrades.find(letterGrade => letterGrade.letter === course.grade)
-      if (result) {
-        total += result.gpa * course.credits
+      let letterGrade = state.letterGrades.find(letterGrade => letterGrade.letter === course.grade)
+      if (letterGrade) {
+        const value = letterGrade.gpa * course.credits
+        if (creditsByGPA === undefined) {
+          creditsByGPA = value
+        } else {
+          creditsByGPA += value
+        }
       }
     })
-    return (total / getters.getTotalCreditsForSemester).toFixed(2)
+    return (creditsByGPA / getters.getTotalCreditsForSemester).toFixed(2)
   },
   getTotalGPA(state, getters) {
     return (state.overallGpa * ((getters.getTotalCreditsAfterCurrentSemester - getters.getTotalCreditsForSemester) / getters.getTotalCreditsAfterCurrentSemester) + getters.getCurrentSemesterGPA * (getters.getTotalCreditsForSemester / getters.getTotalCreditsAfterCurrentSemester)).toFixed(2)
