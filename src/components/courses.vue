@@ -1,7 +1,7 @@
 <template>
   <div class="columns is-multiline">
       <div class="column is-4-desktop is-12-mobile is-6-tablet" v-for="course in courses" :key="course.id">
-          <course :letter-grades="letterGrades" :course-id="course.id"/>
+          <course :course-id="course.id"/>
       </div>
       <div class="column is-4-desktop is-12-mobile is-6-tablet">
           <div class="tile is-parent">
@@ -23,17 +23,8 @@
     components: {
       Course
     },
-    mounted() {
-      Event.$on('new-input', data => {
-        let objIndex = this.courses.findIndex(obj => obj.id === data.id)
-        this.courses[objIndex].assignments = data.assignments
-        this.courses[objIndex].name = data.name
-        this.courses[objIndex].repeat = data.repeat
-        this.courses[objIndex].letterGrades = data.letterGrades
-      })
-    },
     computed: {
-      ...mapState(['courses', 'letterGrades']),
+      ...mapState(['courses']),
     },
     methods: {
       ...mapMutations(['addCourse']),
