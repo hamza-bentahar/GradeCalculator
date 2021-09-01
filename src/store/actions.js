@@ -72,7 +72,7 @@ const actions = {
     let course = {
       id: lastCourseId,
       name: '',
-      credits: 3,
+      credits: 0,
       grade: '',
       repeat: false,
       assignments: assignments,
