@@ -4,11 +4,8 @@ const mutations = {
   ADD_COURSE(state, course) {
     state.courses.push(course)
   },
-  deleteCourse(state, id) {
-    const course = state.courses.find(course => course.id === id)
-    if (confirm("Are you sure that you want to remove the course " + course.name + " from the list?")) {
-      state.courses = state.courses.filter(course => course.id !== id)
-    }
+  REMOVE_COURSE(state, courseId) {
+    state.courses = state.courses.filter(course => course.id !== courseId)
   },
   SET_EARNED_CREDITS(state, credits) {
     state.earnedCredits = credits

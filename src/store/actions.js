@@ -80,6 +80,11 @@ const actions = {
     }
     commit('ADD_COURSE', course)
   },
+  deleteCourse({commit}, courseId) {
+    if (confirm("Are you sure that you want to remove the course from the list?")) {
+      commit('REMOVE_COURSE', courseId)
+    }
+  }
 }
 
 export default actions
