@@ -96,6 +96,10 @@ const getters = {
   getAssignmentByIdx: (state, getters) => (courseId, assignmentIdx) => {
     const course = getters.getCourseById(courseId)
     return course.assignments[assignmentIdx]
+  },
+  getLastCourseId: (state) => {
+    let lastCourse = state.courses[state.courses.length - 1]
+    return lastCourse === undefined ? 0 : lastCourse.id + 1
   }
 }
 

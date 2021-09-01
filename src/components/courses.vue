@@ -16,7 +16,7 @@
 <script>
   /* eslint-disable */
   import Course from './course'
-  import {mapState, mapMutations} from 'vuex'
+  import {mapState, mapActions} from 'vuex'
 
   export default {
     name: "courses",
@@ -27,7 +27,7 @@
       ...mapState(['courses']),
     },
     methods: {
-      ...mapMutations(['addCourse']),
+      ...mapActions(['addCourse']),
     }
   }
 </script>

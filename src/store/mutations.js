@@ -1,22 +1,7 @@
-import {BASE_ASSIGNMENTS_NUMBER, DEFAULT_ASSIGNMENT_VALUE} from "./constants"
+import {DEFAULT_ASSIGNMENT_VALUE} from "./constants"
 
 const mutations = {
-  addCourse(state) {
-    let lastCourse = state.courses[state.courses.length - 1]
-    const id = lastCourse === undefined ? 0 : lastCourse.id + 1
-    const assignments = []
-    for (let i = 0; i < BASE_ASSIGNMENTS_NUMBER; i++){
-      assignments.push({...DEFAULT_ASSIGNMENT_VALUE})
-    }
-    let course = {
-      id: id,
-      name: '',
-      credits: 3,
-      grade: '',
-      repeat: false,
-      assignments: assignments,
-      letterGrades: state.letterGrades
-    }
+  ADD_COURSE(state, course) {
     state.courses.push(course)
   },
   deleteCourse(state, id) {

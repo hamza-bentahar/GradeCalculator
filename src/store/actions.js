@@ -1,3 +1,5 @@
+import {BASE_ASSIGNMENTS_NUMBER, BASE_LETTER_GRADES, DEFAULT_ASSIGNMENT_VALUE} from "./constants";
+
 const actions = {
   updateAssignmentName({getters, commit}, {newName, courseId, assignmentIdx}) {
     const courseIdx = getters.getCourseIdx(courseId)
@@ -60,7 +62,24 @@ const actions = {
       newValue: letterGrades,
       courseIdx: courseIdx
     })
-  }
+  },
+  addCourse({state, getters, commit}) {
+    const lastCourseId = getters.getLastCourseId
+    const assignments = []
+    for (let i = 0; i < BASE_ASSIGNMENTS_NUMBER; i++){
+      assignments.push({...DEFAULT_ASSIGNMENT_VALUE})
+    }
+    let course = {
+      id: lastCourseId,
+      name: '',
+      credits: 3,
+      grade: '',
+      repeat: false,
+      assignments: assignments,
+      letterGrades: state.letterGrades
+    }
+    commit('ADD_COURSE', course)
+  },
 }
 
 export default actions
