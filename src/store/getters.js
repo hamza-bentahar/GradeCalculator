@@ -14,7 +14,7 @@ const getters = {
   getCurrentSemesterGPA(state, getters) {
     let creditsByGPA = undefined
     state.courses.forEach(course => {
-      let letterGrade = state.letterGrades.find(letterGrade => letterGrade.letter === course.grade)
+      let letterGrade = course.letterGrades.find(letterGrade => letterGrade.letter === course.grade)
       if (letterGrade) {
         const value = letterGrade.gpa * course.credits
         if (creditsByGPA === undefined) {
