@@ -6,7 +6,7 @@ const mutations = {
     const id = lastCourse === undefined ? 0 : lastCourse.id + 1
     const assignments = []
     for (let i = 0; i < BASE_ASSIGNMENTS_NUMBER; i++){
-      assignments.push(DEFAULT_ASSIGNMENT_VALUE)
+      assignments.push({...DEFAULT_ASSIGNMENT_VALUE})
     }
     let course = {
       id: id,
@@ -25,14 +25,14 @@ const mutations = {
       state.courses = state.courses.filter(course => course.id !== id)
     }
   },
-  updateEarnedCredits(state, credits) {
+  SET_EARNED_CREDITS(state, credits) {
     state.earnedCredits = credits
   },
-  updateOverallGPA(state, gpa) {
+  SET_OVERALL_GPA(state, gpa) {
     state.overallGpa = gpa
   },
   ADD_ASSIGNMENT(state, courseIdx) {
-    state.courses[courseIdx].assignments.push(DEFAULT_ASSIGNMENT_VALUE)
+    state.courses[courseIdx].assignments.push({...DEFAULT_ASSIGNMENT_VALUE})
   },
   REMOVE_ASSIGNMENT(state, {courseIdx, assignmentIdx}) {
     state.courses[courseIdx].assignments.splice(assignmentIdx, 1)

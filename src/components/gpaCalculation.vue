@@ -7,15 +7,24 @@
           <div class="field">
             <div class="control">
               <label for="credits">Credits Earned</label>
-              <input type="number" class="input" placeholder="Credits Earned" id="credits"
-                     v-model.number="earnedCredits" min="0">
+              <input type="number"
+                     class="input"
+                     placeholder="Credits Earned"
+                     id="credits"
+                     v-model.number="earnedCredits"
+                     min="0">
             </div>
           </div>
           <div class="field">
             <div class="control">
               <label for="gpa">Overall GPA</label>
-              <input type="number" class="input" placeholder="Overall GPA" id="gpa"
-                     v-model.number="overallGpa" min="0" max="4">
+              <input type="number"
+                     class="input"
+                     placeholder="Overall GPA"
+                     id="gpa"
+                     v-model.number="overallGpa"
+                     min="0"
+                     max="4">
             </div>
           </div>
         </div>
@@ -42,7 +51,7 @@ export default {
         return this.$store.state.earnedCredits
       },
       set (value) {
-        this.$store.commit('updateEarnedCredits', value)
+        this.$store.commit('SET_EARNED_CREDITS', value)
       }
     },
     overallGpa: {
@@ -50,7 +59,7 @@ export default {
         return this.$store.state.overallGpa
       },
       set (value) {
-        this.$store.commit('updateOverallGPA', value)
+        this.$store.commit('SET_OVERALL_GPA', value)
       }
     }
   }

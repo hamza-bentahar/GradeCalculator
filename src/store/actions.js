@@ -13,17 +13,17 @@ const actions = {
     commit('SET_ASSIGNMENT_VALUE', {
       key: 'grade',
       newValue: newGrade,
-      courseIdx: courseIdx,
-      assignmentIdx: assignmentIdx
+      courseIdx,
+      assignmentIdx
     })
   },
   updateAssignmentWeight({getters, commit}, {newWeight, courseId, assignmentIdx}) {
     const courseIdx = getters.getCourseIdx(courseId)
     commit('SET_ASSIGNMENT_VALUE', {
-      'key': 'weight',
-      'newValue': newWeight,
-      'courseIdx': courseIdx,
-      'assignmentIdx': assignmentIdx
+      key: 'weight',
+      newValue: newWeight,
+      courseIdx,
+      assignmentIdx
     })
   },
   deleteAssignment({getters, commit}, {courseId, assignmentIdx}) {
