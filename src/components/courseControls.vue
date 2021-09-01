@@ -10,7 +10,7 @@
 </template>
 
 <script>
-import {mapMutations} from "vuex";
+import {mapMutations, mapActions} from "vuex";
 
 export default {
   name: "courseControls",
@@ -21,7 +21,8 @@ export default {
     }
   },
   methods: {
-    ...mapMutations(['addAssignment', 'deleteCourse'])
+    ...mapMutations(['deleteCourse']),
+    ...mapActions(['addAssignment'])
   }
 }
 </script>

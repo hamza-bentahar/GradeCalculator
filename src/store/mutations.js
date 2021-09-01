@@ -1,4 +1,4 @@
-import {BASE_ASSIGNMENTS_NUMBER} from "./constants"
+import {BASE_ASSIGNMENTS_NUMBER, DEFAULT_ASSIGNMENT_VALUE} from "./constants"
 
 const mutations = {
   addCourse(state) {
@@ -6,11 +6,7 @@ const mutations = {
     const id = lastCourse === undefined ? 0 : lastCourse.id + 1
     const assignments = []
     for (let i = 0; i < BASE_ASSIGNMENTS_NUMBER; i++){
-      assignments.push({
-        name: '',
-        grade: '',
-        weight: ''
-      })
+      assignments.push(DEFAULT_ASSIGNMENT_VALUE)
     }
     let course = {
       id: id,
@@ -35,29 +31,14 @@ const mutations = {
   updateOverallGPA(state, gpa) {
     state.overallGpa = gpa
   },
-  addAssignment(state, courseId) {
-    const courseIdx = state.courses.findIndex(course => course.id === courseId)
-    state.courses[courseIdx].assignments.push({
-      name: '',
-      grade: '',
-      weight: ''
-    })
+  ADD_ASSIGNMENT(state, courseIdx) {
+    state.courses[courseIdx].assignments.push(DEFAULT_ASSIGNMENT_VALUE)
   },
-  removeAssignment(state, {courseId, assignmentIdx}) {
-    const courseIdx = state.courses.findIndex(course => course.id === courseId)
+  REMOVE_ASSIGNMENT(state, {courseIdx, assignmentIdx}) {
     state.courses[courseIdx].assignments.splice(assignmentIdx, 1)
   },
-  updateAssignmentName(state, {newName, courseId, assignmentIdx}) {
-    const courseIdx = state.courses.findIndex(course => course.id === courseId)
-    state.courses[courseIdx].assignments[assignmentIdx].name = newName
-  },
-  updateAssignmentGrade(state, {newGrade, courseId, assignmentIdx}) {
-    const courseIdx = state.courses.findIndex(course => course.id === courseId)
-    state.courses[courseIdx].assignments[assignmentIdx].grade = newGrade
-  },
-  updateAssignmentWeight(state, {newWeight, courseId, assignmentIdx}) {
-    const courseIdx = state.courses.findIndex(course => course.id === courseId)
-    state.courses[courseIdx].assignments[assignmentIdx].weight = newWeight
+  SET_ASSIGNMENT_VALUE(state, {key, newValue, courseIdx, assignmentIdx}) {
+    state.courses[courseIdx].assignments[assignmentIdx][key] = newValue
   },
   updateCourseName(state, {newName, courseId}) {
     const courseIdx = state.courses.findIndex(course => course.id === courseId)

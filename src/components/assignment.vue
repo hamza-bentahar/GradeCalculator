@@ -36,13 +36,15 @@
       </div>
     </td>
     <td>
-      <i class="fa fa-minus-circle has-text-danger pointer" @click="removeAssignment({courseId, assignmentIdx})"></i>
+      <i class="fa fa-minus-circle has-text-danger pointer"
+         @click="deleteAssignment({courseId, assignmentIdx})">
+      </i>
     </td>
   </tr>
 </template>
 
 <script>
-import {mapMutations, mapGetters} from 'vuex'
+import {mapGetters, mapActions} from 'vuex'
 export default {
   name: "assignment",
   props: {
@@ -65,7 +67,7 @@ export default {
     }
   },
   methods: {
-    ...mapMutations(['removeAssignment', 'updateAssignmentName', 'updateAssignmentGrade', 'updateAssignmentWeight']),
+    ...mapActions(['updateAssignmentName', 'updateAssignmentGrade', 'updateAssignmentWeight', 'deleteAssignment']),
     inputAssignmentName(event, assignmentIdx) {
       this.updateAssignmentName({
         newName: event.target.value,
