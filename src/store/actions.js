@@ -37,6 +37,30 @@ const actions = {
     const courseIdx = getters.getCourseIdx(courseId)
     commit('ADD_ASSIGNMENT', courseIdx)
   },
+  updateCourseName({getters, commit}, {newName, courseId}) {
+    const courseIdx = getters.getCourseIdx(courseId)
+    commit('SET_COURSE_VALUE', {
+      key: 'name',
+      newValue: newName,
+      courseIdx: courseIdx
+    })
+  },
+  updateCourseCredits({getters, commit}, {credits, courseId}) {
+    const courseIdx = getters.getCourseIdx(courseId)
+    commit('SET_COURSE_VALUE', {
+      key: 'credits',
+      newValue: credits,
+      courseIdx: courseIdx
+    })
+  },
+  updateLetterGrades({getters, commit}, {letterGrades, courseId}) {
+    const courseIdx = getters.getCourseIdx(courseId)
+    commit('SET_COURSE_VALUE', {
+      key: 'letterGrades',
+      newValue: letterGrades,
+      courseIdx: courseIdx
+    })
+  }
 }
 
 export default actions

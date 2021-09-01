@@ -40,17 +40,8 @@ const mutations = {
   SET_ASSIGNMENT_VALUE(state, {key, newValue, courseIdx, assignmentIdx}) {
     state.courses[courseIdx].assignments[assignmentIdx][key] = newValue
   },
-  updateCourseName(state, {newName, courseId}) {
-    const courseIdx = state.courses.findIndex(course => course.id === courseId)
-    state.courses[courseIdx].name = newName
-  },
-  updateCourseCredits(state, {credits, courseId}) {
-    const courseIdx = state.courses.findIndex(course => course.id === courseId)
-    state.courses[courseIdx].credits = credits
-  },
-  updateLetterGrades(state, {letterGrades, courseId}) {
-    const courseIdx = state.courses.findIndex(course => course.id === courseId)
-    state.courses[courseIdx].letterGrades = letterGrades
+  SET_COURSE_VALUE(state, {key, newValue, courseIdx}) {
+    state.courses[courseIdx][key] = newValue
   }
 }
 

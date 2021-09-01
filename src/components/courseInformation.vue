@@ -39,7 +39,7 @@
 <script>
 import modal from './modal'
 import courseSettings from "./courseSettings"
-import {mapGetters, mapMutations} from "vuex";
+import {mapGetters, mapActions} from "vuex";
 
 export default {
   name: "courseInformation",
@@ -70,7 +70,7 @@ export default {
     }
   },
   methods: {
-    ...mapMutations(['updateCourseName', 'updateCourseCredits']),
+    ...mapActions(['updateCourseName', 'updateCourseCredits']),
     inputCourseName(event) {
       this.updateCourseName({
         newName: event.target.value,

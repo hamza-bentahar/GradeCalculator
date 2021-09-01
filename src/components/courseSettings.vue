@@ -41,7 +41,7 @@
 </template>
 
 <script>
-import {mapGetters, mapMutations} from "vuex";
+import {mapGetters, mapActions} from "vuex";
 
 export default {
   name: "courseSettings",
@@ -66,7 +66,7 @@ export default {
     }
   },
   methods: {
-    ...mapMutations(['updateLetterGrades']),
+    ...mapActions(['updateLetterGrades']),
     save(close = true) {
       this.updateLetterGrades({
         letterGrades: this.userLetterGrades,
