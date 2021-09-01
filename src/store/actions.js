@@ -1,6 +1,6 @@
 const actions = {
-  updateAssignmentName({state, commit}, {newName, courseId, assignmentIdx}) {
-    const courseIdx = state.courses.findIndex(course => course.id === courseId)
+  updateAssignmentName({getters, commit}, {newName, courseId, assignmentIdx}) {
+    const courseIdx = getters.getCourseIdx(courseId)
     commit('SET_ASSIGNMENT_VALUE', {
       key: 'name',
       newValue: newName,
@@ -8,8 +8,8 @@ const actions = {
       assignmentIdx
     })
   },
-  updateAssignmentGrade({state, commit}, {newGrade, courseId, assignmentIdx}) {
-    const courseIdx = state.courses.findIndex(course => course.id === courseId)
+  updateAssignmentGrade({getters, commit}, {newGrade, courseId, assignmentIdx}) {
+    const courseIdx = getters.getCourseIdx(courseId)
     commit('SET_ASSIGNMENT_VALUE', {
       key: 'grade',
       newValue: newGrade,
@@ -17,8 +17,8 @@ const actions = {
       assignmentIdx: assignmentIdx
     })
   },
-  updateAssignmentWeight({state, commit}, {newWeight, courseId, assignmentIdx}) {
-    const courseIdx = state.courses.findIndex(course => course.id === courseId)
+  updateAssignmentWeight({getters, commit}, {newWeight, courseId, assignmentIdx}) {
+    const courseIdx = getters.getCourseIdx(courseId)
     commit('SET_ASSIGNMENT_VALUE', {
       'key': 'weight',
       'newValue': newWeight,
@@ -26,15 +26,15 @@ const actions = {
       'assignmentIdx': assignmentIdx
     })
   },
-  deleteAssignment({state, commit}, {courseId, assignmentIdx}) {
-    const courseIdx = state.courses.findIndex(course => course.id === courseId)
+  deleteAssignment({getters, commit}, {courseId, assignmentIdx}) {
+    const courseIdx = getters.getCourseIdx(courseId)
     commit('REMOVE_ASSIGNMENT', {
       courseIdx,
       assignmentIdx
     })
   },
-  addAssignment({state, commit}, courseId) {
-    const courseIdx = state.courses.findIndex(course => course.id === courseId)
+  addAssignment({getters, commit}, courseId) {
+    const courseIdx = getters.getCourseIdx(courseId)
     commit('ADD_ASSIGNMENT', courseIdx)
   },
 }

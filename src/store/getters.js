@@ -28,6 +28,9 @@ const getters = {
   getCourseById: (state) => (courseId) => {
     return state.courses.find(course => course.id === courseId)
   },
+  getCourseIdx: (state) => (courseId) => {
+    return  state.courses.findIndex(course => course.id === courseId)
+  },
   getCourseAverage: (state, getters) => (courseId) => {
     const course = getters.getCourseById(courseId)
     let weight = 0
