@@ -1,4 +1,4 @@
-import {BASE_ASSIGNMENTS_NUMBER, BASE_LETTER_GRADES, DEFAULT_ASSIGNMENT_VALUE} from "./constants";
+import {BASE_ASSIGNMENTS_NUMBER, DEFAULT_ASSIGNMENT_VALUE} from "./constants";
 
 const actions = {
   updateAssignmentName({getters, commit}, {newName, courseId, assignmentIdx}) {

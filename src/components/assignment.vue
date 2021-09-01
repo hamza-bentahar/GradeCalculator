@@ -8,7 +8,7 @@
                  placeholder="Name"
                  :value="assignment.name"
                  @input="inputAssignmentName($event, assignmentIdx)">
-          <span class="icon is-right" v-if="getAssigmentCheck(courseId, assignmentIdx)">
+          <span class="icon is-right" v-if="isAssignmentValid(courseId, assignmentIdx)">
             <i class="fa fa-check has-text-success"></i>
           </span>
         </div>
@@ -58,7 +58,7 @@ export default {
     }
   },
   computed: {
-    ...mapGetters(['getCourseById', 'getAssigmentCheck', 'getAssignmentByIdx']),
+    ...mapGetters(['getCourseById', 'isAssignmentValid', 'getAssignmentByIdx']),
     course() {
       return this.getCourseById(this.courseId)
     },

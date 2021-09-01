@@ -82,7 +82,7 @@ const getters = {
     state.courses[courseIdx].grade = getters.getCourseLetterGrade(courseId, total)
     return cnt ? total.toFixed(2) : null
   },
-  getAssigmentCheck: (state, getters) => (courseId, assigmentIdx) => {
+  isAssignmentValid: (state, getters) => (courseId, assigmentIdx) => {
     const course = getters.getCourseById(courseId)
     return course.assignments[assigmentIdx].grade && course.assignments[assigmentIdx].weight
   },
