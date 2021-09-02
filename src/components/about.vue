@@ -2,7 +2,7 @@
   <article class="tile is-vertical box">
     <p class="title">About</p>
     <p>
-      AUI utilities is a personal project I wanted to share with Al Akhawayn University students,
+      Grades calculator is a personal project I wanted to share with Al Akhawayn University students,
       to help the community a better feedback on their academic performance. <br>
       The main functions are the following:
     </p>
